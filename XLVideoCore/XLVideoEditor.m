@@ -287,7 +287,7 @@
             
             videoInstruction.customType = XLCustomTypeTransition;
             
-            videoInstruction.previosScene = self.scenes[i];
+            videoInstruction.scene = self.scenes[i];
             
             videoInstruction.nextScene = self.scenes[i+1];
             

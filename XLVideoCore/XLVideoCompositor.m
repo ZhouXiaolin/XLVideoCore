@@ -10,8 +10,8 @@
 #import "XLVideoCompositorRenderer.h"
 #import "XLVideoCompositorInstruction.h"
 #import "XLScene.h"
-#define RENDERINGQUEUE "com.17rd.xpk.renderingqueue"
-#define RENDERCONTEXTQUEUE "com.17rd.xpk.rendercontextqueue"
+#define RENDERINGQUEUE "com.mfasta.videocore.renderingqueue"
+#define RENDERCONTEXTQUEUE "com.mfasta.videocore.rendercontextqueue"
 #import <UIKit/UIKit.h>
 @interface XLVideoCompositor(){
     BOOL _shouldCancelAllRequest;
@@ -73,10 +73,6 @@
                 [request finishCancelledRequest];
             }else{
                 
-                
-                
-                
-                
                 NSError *err = nil;
                 
                 CVPixelBufferRef resultPixels = [self newRenderedPixelBufferForRequest:request error:&err];
@@ -105,9 +101,7 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     CVPixelBufferRef dstPixels = [_renderContext newPixelBuffer];
     CGSize renderSize = _renderContext.size;
     
-    
     _renderer.videoSize = renderSize;
-    
     XLVideoCompositorInstruction* instruction = request.videoCompositionInstruction;
     
     if (instruction.customType == XLCustomTypePassThrough) {
@@ -120,7 +114,7 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     if (instruction.customType == XLCustomTypeTransition) {
         
         CVPixelBufferRef previousPixels = [_renderContext newPixelBuffer];
-        XLScene* previousScene = instruction.previosScene;
+        XLScene* previousScene = instruction.scene;
         [_renderer renderCustomPixelBuffer:previousPixels scene:previousScene request:request];
         
         CVPixelBufferRef nextPixels = [ _renderContext newPixelBuffer];
