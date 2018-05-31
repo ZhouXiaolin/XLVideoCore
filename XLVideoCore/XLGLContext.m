@@ -44,6 +44,9 @@
     NSAssert(context != nil, @"Unable to create an OpenGL ES 2.0 context. The GPUImage framework requires OpenGL ES 2.0 support to work.");
     return context;
 }
++ (void)useContext{
+    [[XLGLContext context] useAsCurrentContext];
+}
 - (void)useAsCurrentContext
 {
     EAGLContext *imageProcessingContext = [self context];

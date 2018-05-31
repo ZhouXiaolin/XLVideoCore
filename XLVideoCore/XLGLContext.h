@@ -13,5 +13,6 @@
 @property (readonly, retain, nonatomic) EAGLContext* context;
 @property (readonly) CVOpenGLESTextureCacheRef coreVideoTextureCache;
 + (XLGLContext *) context;
++ (void) useContext;
 - (void) useAsCurrentContext;
 @end
