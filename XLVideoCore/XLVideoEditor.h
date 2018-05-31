@@ -7,10 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "XLScene.h"
-
-
 
 @interface XLVideoEditor : NSObject
 

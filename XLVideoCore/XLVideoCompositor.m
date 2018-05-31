@@ -73,6 +73,8 @@
                 [request finishCancelledRequest];
             }else{
                 
+                
+                
                 NSError *err = nil;
                 
                 CVPixelBufferRef resultPixels = [self newRenderedPixelBufferForRequest:request error:&err];

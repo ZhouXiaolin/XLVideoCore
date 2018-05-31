@@ -15,6 +15,7 @@
 #include "ksMatrix.h"
 #include "ParticleSystem.h"
 #import "XLGLContext.h"
+#import "XLGLProgram.h"
 using namespace Simple2D;
 
 #define STRINGIZE(x) #x
@@ -151,29 +152,25 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     
     GLuint vertShader, fragShader, blendFragShader, maskFragShader,particleVertShader,particleFragShader;
     
-    ParticleSystemManager particleSystemManager;
-    ParticleSystem* fire1PS;
+
     
     
     ksMatrix4 _modelViewMatrix;
     ksMatrix4 _projectionMatrix;
-    
+#if 0
+    ParticleSystemManager particleSystemManager;
+    ParticleSystem* fire1PS;
     VertexData* vertexData;
     
     ResizeVector<Vec2> vDefaultTexcoords;
     ResizeVector<int> vDefaultIndices;
-    
+#endif
     
     XLGLContext* context;
-    
+    XLGLProgram* _program;
+    XLGLProgram* _blendProgram;
+    XLGLProgram* _maskProgram;
 }
-@property GLuint program;
-@property GLuint blendProgram;
-@property GLuint maskProgram;
-@property GLuint particleProgram;
-
-//@property CVOpenGLESTextureCacheRef videoTextureCache;
-//@property EAGLContext *currentContext;
 @property GLuint offscreenBufferHandle;
 @end
 
@@ -196,7 +193,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         
         
         //初始化一个粒子效果
-        
+#if 0
         vertexData = new VertexData();
         
         fire1PS = new ParticleSystem;
@@ -210,11 +207,8 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         fire1PS->getEmitter()->getParticleEffect()->motionMode = MotionMode::MOTION_MODE_FREE;
         
         particleSystemManager.appendParticleSystem(fire1PS);
+#endif
         
-        
-        
-//        _currentContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-//        [EAGLContext setCurrentContext:_currentContext];
         
         context = [XLGLContext context];
         [context useAsCurrentContext];
@@ -229,7 +223,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     
     return self;
 }
-
+#if 0
 - (bool) setDefaultTexcoords:(int) new_size{
     int old_size = (int)vDefaultTexcoords.vector.size();
     if ( old_size >= new_size ) return false;
@@ -273,14 +267,13 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     }
     return true;
 }
-
+#endif
 - (void) clear
 {
     [XLTexturePool.sharedInstance clear];    
 }
 - (void)dealloc
 {
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"%s",__func__);
 
     if (_offscreenBufferHandle) {
@@ -288,16 +281,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         _offscreenBufferHandle = 0;
     }
     
-    if (_program) {
-        glDeleteProgram(_program);
-    }
-    if (_blendProgram) {
-        glDeleteProgram(_blendProgram);
-    }
-    if (_maskProgram) {
-        glDeleteProgram(_maskProgram);
-    }
-    
+
     [EAGLContext setCurrentContext:nil];
 }
 
@@ -648,7 +632,7 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
 
     [context useAsCurrentContext];
     
-    glUseProgram(self.program);
+    [_program use];
     
     CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
     glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
@@ -891,7 +875,7 @@ bail1:
     [EAGLContext setCurrentContext:nil];
     
 }
-
+#if 0
 - (void) particleRenderPixeBuffer:(CVPixelBufferRef) destinationPixelBuffer
                  usingSouceBuffer:(CVPixelBufferRef) sourcePixelBuffer
 
@@ -1051,7 +1035,7 @@ bailMask:
     //
     [EAGLContext setCurrentContext:nil];
 }
-
+#endif
 
 
 - (void) renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer
@@ -1063,7 +1047,7 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
 
     [context useAsCurrentContext];
     
-    glUseProgram(self.maskProgram);
+    [_maskProgram use];
     
     CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
     glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
@@ -1113,7 +1097,7 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
         
         
         
-        glUseProgram(self.maskProgram);
+        [_maskProgram use];
         
         ksMatrixLoadIdentity(&_modelViewMatrix);
         
@@ -1217,8 +1201,8 @@ bailMask:
         
         int transitionType = type;
         if (transitionType <= 4) {
-            glUseProgram(self.program);
-            //            [program use];
+//            glUseProgram(self.program);
+                        [_program use];
             // Set the render transform
             
             
@@ -1332,8 +1316,8 @@ bailMask:
             
         }
         if (transitionType == 5 || transitionType == 6 || transitionType == 7 ) { // 淡入
-            glUseProgram(self.blendProgram);
-            
+
+            [_blendProgram use];
             
             
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1435,265 +1419,48 @@ bail2:
 
 - (BOOL)loadShaders
 {
-    
-    _program          = glCreateProgram();
-    _blendProgram     = glCreateProgram();
-    _maskProgram      = glCreateProgram();
-    
-    _particleProgram = glCreateProgram();
+
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorFragmentShader];
+    [_program link];
     
     
-    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER source:kRDCompositorVertexShader]) {
-        NSLog(@"Failed to compile vertex shader");
-        return NO;
-    }
-    
-    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER source:kRDCompositorFragmentShader]) {
-        NSLog(@"Failed to compile cust fragment shader");
-        return NO;
-    }
-    
-    if (![self compileShader:&blendFragShader type:GL_FRAGMENT_SHADER source:kRDCompositorBlendFragmentShader]) {
-        NSLog(@"Failed to compile blend fragment shader");
-        return NO;
-    }
-    
-    if (![self compileShader:&maskFragShader type:GL_FRAGMENT_SHADER source:kRDCompositorPassThroughMaskFragmentShader]) {
-        NSLog(@"Failed to compile mask fragment shader");
-        return NO;
-    }
-    
-    if (![self compileShader:&particleVertShader type:GL_VERTEX_SHADER source:kRDParticleVertexShader]) {
-        
-    }
-    if (![self compileShader:&particleFragShader type:GL_FRAGMENT_SHADER source:kRDParticleFragmentShader]) {
-        
-    }
+    normalPositionAttribute = [_program attributeIndex: @"position"];
+    normalTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
+    normalProjectionUniform = [_program uniformIndex: @"projection"];
+    normalInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
+    normalInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
+    normalTransformUniform = [_program uniformIndex: @"renderTransform"];
+    normalColorUniform = [_program uniformIndex: @"color"];
     
     
+    _blendProgram = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorBlendFragmentShader];
+    [_blendProgram link];
     
-    glReleaseShaderCompiler();
+    blendPositionAttribute = [_blendProgram attributeIndex: @"position"];
+    blendTextureCoordinateAttribute = [_blendProgram attributeIndex: @"inputTextureCoordinate"];
+    blendProjectionUniform = [_blendProgram uniformIndex: @"projection"];
+    blendInputTextureUniform = [_blendProgram uniformIndex: @"inputImageTexture"];
+    blendInputTextureUniform2 = [_blendProgram uniformIndex: @"inputImageTexture2"];
+    blendTransformUniform = [_blendProgram uniformIndex: @"renderTransform"];
+    blendColorUniform = [_blendProgram uniformIndex: @"color"];
+    blendFactorUniform = [_blendProgram uniformIndex: @"factor"];
+    blendBrightnessUniform = [_blendProgram uniformIndex: @"brightness"];
     
-    glAttachShader(_program, vertShader);
-    glAttachShader(_program, fragShader);
+    _maskProgram = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorPassThroughMaskFragmentShader];
+    [_maskProgram link];
     
-    glAttachShader(_blendProgram, vertShader);
-    glAttachShader(_blendProgram, blendFragShader);
-    
-    glAttachShader(_maskProgram, vertShader);
-    glAttachShader(_maskProgram, maskFragShader);
-    
-    glAttachShader(_particleProgram, particleVertShader);
-    glAttachShader(_particleProgram, particleFragShader);
-    
-    // Link the program.
-    if (![self linkProgram:_program]           ||
-        ![self linkProgram:_blendProgram]      ||
-        ![self linkProgram:_maskProgram]       ||
-        ![self linkProgram:_particleProgram]
-        ) {
-        if (vertShader) {
-            glDeleteShader(vertShader);
-            vertShader = 0;
-        }
-        if (fragShader) {
-            glDeleteShader(fragShader);
-            fragShader = 0;
-        }
-        
-        if (blendFragShader) {
-            glDeleteShader(blendFragShader);
-            blendFragShader = 0;
-        }
-        if (maskFragShader) {
-            glDeleteShader(maskFragShader);
-            maskFragShader = 0;
-        }
-        if (particleVertShader) {
-            glDeleteShader(particleVertShader);
-            particleVertShader = 0;
-        }
-        if (particleFragShader) {
-            glDeleteShader(particleFragShader);
-            particleFragShader = 0;
-        }
-        
-        
-        if (_program) {
-            glDeleteProgram(_program);
-            _program = 0;
-        }
-        if (_blendProgram) {
-            glDeleteProgram(_blendProgram);
-            _blendProgram = 0;
-        }
-        
-        if (_maskProgram) {
-            glDeleteProgram(_maskProgram);
-            _maskProgram = 0;
-        }
-        if (_particleProgram) {
-            glDeleteProgram(_particleProgram);
-            _particleProgram = 0;
-        }
-        
-        return NO;
-    }
-    
-    
-    
-    // Get uniform locations.
-    
-    normalPositionAttribute = glGetAttribLocation(_program, "position");
-    normalTextureCoordinateAttribute = glGetAttribLocation(_program, "inputTextureCoordinate");
-    normalProjectionUniform = glGetUniformLocation(_program, "projection");
-    normalInputTextureUniform = glGetUniformLocation(_program, "inputImageTexture");
-    normalInputTextureUniform2 = glGetUniformLocation(_program, "inputImageTexture2");
-    normalTransformUniform = glGetUniformLocation(_program, "renderTransform");
-    normalColorUniform = glGetUniformLocation(_program, "color");
-    
-    
-    
-    blendPositionAttribute = glGetAttribLocation(_blendProgram, "position");
-    blendTextureCoordinateAttribute = glGetAttribLocation(_blendProgram, "inputTextureCoordinate");
-    blendProjectionUniform = glGetUniformLocation(_blendProgram, "projection");
-    blendInputTextureUniform = glGetUniformLocation(_blendProgram, "inputImageTexture");
-    blendInputTextureUniform2 = glGetUniformLocation(_blendProgram, "inputImageTexture2");
-    blendTransformUniform = glGetUniformLocation(_blendProgram, "renderTransform");
-    blendColorUniform = glGetUniformLocation(_blendProgram, "color");
-    blendFactorUniform = glGetUniformLocation(_blendProgram, "factor");
-    blendBrightnessUniform = glGetUniformLocation(_blendProgram, "brightness");
-    
-    
-    
-    maskPositionAttribute = glGetAttribLocation(_maskProgram, "position");
-    maskTextureCoordinateAttribute = glGetAttribLocation(_maskProgram, "inputTextureCoordinate");
-    maskProjectionUniform = glGetUniformLocation(_maskProgram, "projection");
-    maskInputTextureUniform = glGetUniformLocation(_maskProgram, "inputImageTexture");
-    maskInputTextureUniform2 = glGetUniformLocation(_maskProgram, "inputImageTexture2");
-    maskInputTextureUniform3 = glGetUniformLocation(_maskProgram, "inputImageTexture3");
-    maskTransformUniform = glGetUniformLocation(_maskProgram, "renderTransform");
-    maskFactorUniform = glGetUniformLocation(_maskProgram, "factor");
-    
-    
-    particlePositionAttribute = glGetAttribLocation(_particleProgram, "position");
-    particleTextureCoordinateAttribute = glGetAttribLocation(_particleProgram, "inputTextureCoordinate");
-    particleTextureColorAttribute = glGetAttribLocation(_particleProgram, "inputTextureColor");
-    particleInputTextureUniform = glGetUniformLocation(_particleProgram, "inputImageTexture");
-    // Release vertex and fragment shaders.
-    if (vertShader) {
-        glDetachShader(_program, vertShader);
-        glDeleteShader(vertShader);
-    }
-    
-    if (fragShader) {
-        glDetachShader(_program, fragShader);
-        glDeleteShader(fragShader);
-    }
-    
-    if (blendFragShader) {
-        glDetachShader(_blendProgram, blendFragShader);
-        glDeleteShader(blendFragShader);
-    }
-    if (maskFragShader) {
-        glDetachShader(_maskProgram, maskFragShader);
-        glDeleteShader(maskFragShader);
-    }
-    if (particleVertShader) {
-        glDetachShader(_particleProgram, particleVertShader);
-        glDeleteShader(particleVertShader);
-    }
-    if (particleFragShader) {
-        glDetachShader(_particleProgram, particleFragShader);
-        glDeleteShader(particleFragShader);
-    }
+    maskPositionAttribute = [_maskProgram attributeIndex: @"position"];
+    maskTextureCoordinateAttribute = [_maskProgram attributeIndex: @"inputTextureCoordinate"];
+    maskProjectionUniform = [_maskProgram uniformIndex: @"projection"];
+    maskInputTextureUniform = [_maskProgram uniformIndex: @"inputImageTexture"];
+    maskInputTextureUniform2 = [_maskProgram uniformIndex: @"inputImageTexture2"];
+    maskInputTextureUniform3 = [_maskProgram uniformIndex: @"inputImageTexture3"];
+    maskTransformUniform = [_maskProgram uniformIndex: @"renderTransform"];
+    maskFactorUniform = [_maskProgram uniformIndex: @"factor"];
     
     return YES;
 }
 
-- (BOOL)compileShader:(GLuint *)shader type:(GLenum)type source:(NSString *)sourceString
-{
-    if (sourceString == nil) {
-        NSLog(@"Failed to load vertex shader: Empty source string");
-        return NO;
-    }
-    
-    GLint status;
-    const GLchar *source;
-    source = (GLchar *)[sourceString UTF8String];
-    
-    *shader = glCreateShader(type);
-    glShaderSource(*shader, 1, &source, NULL);
-    glCompileShader(*shader);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        NSLog(@"Shader compile log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
-    if (status == 0) {
-        glDeleteShader(*shader);
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)linkProgram:(GLuint)prog
-{
-    GLint status;
-    glLinkProgram(prog);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program link log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-#if defined(DEBUG)
-
-- (BOOL)validateProgram:(GLuint)prog
-{
-    GLint logLength, status;
-    
-    glValidateProgram(prog);
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program validate log:\n%s", log);
-        free(log);
-    }
-    
-    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-#endif
 
 #pragma mark -- Get TextureRef from PixelBuffer
 - (CVOpenGLESTextureRef)lumaTextureForPixelBuffer:(CVPixelBufferRef)pixelBuffer
