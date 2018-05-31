@@ -12,5 +12,6 @@
 @interface XLGLContext : NSObject
 @property (readonly, retain, nonatomic) EAGLContext* context;
 @property (readonly) CVOpenGLESTextureCacheRef coreVideoTextureCache;
++ (XLGLContext *) context;
 - (void) useAsCurrentContext;
 @end

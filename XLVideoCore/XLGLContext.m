@@ -12,7 +12,14 @@
 @synthesize context = _context;
 @synthesize coreVideoTextureCache = _coreVideoTextureCache;
 
-
++ (XLGLContext *)context{
+    static XLGLContext* instance = nil ;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[[self class] alloc] init];
+    });
+    return instance;
+}
 - (instancetype)init{
     if (self = [super init]) {
         

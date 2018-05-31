@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Solaren. All rights reserved.
 //
 
-#import "XLGLRendererFactory.h"
+#import "XLGLRendererComposition.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <Photos/Photos.h>
@@ -14,6 +14,7 @@
 #include "ksVector.h"
 #include "ksMatrix.h"
 #include "ParticleSystem.h"
+#import "XLGLContext.h"
 using namespace Simple2D;
 
 #define STRINGIZE(x) #x
@@ -131,7 +132,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
  );
 
 
-@interface XLGLRendererFactory ()
+@interface XLGLRendererComposition ()
 {
     GLuint normalPositionAttribute,normalTextureCoordinateAttribute;
     GLuint normalInputTextureUniform,normalInputTextureUniform2;
@@ -163,7 +164,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     ResizeVector<int> vDefaultIndices;
     
     
-    
+    XLGLContext* context;
     
 }
 @property GLuint program;
@@ -171,15 +172,15 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
 @property GLuint maskProgram;
 @property GLuint particleProgram;
 
-@property CVOpenGLESTextureCacheRef videoTextureCache;
-@property EAGLContext *currentContext;
+//@property CVOpenGLESTextureCacheRef videoTextureCache;
+//@property EAGLContext *currentContext;
 @property GLuint offscreenBufferHandle;
 @end
 
-@implementation XLGLRendererFactory
+@implementation XLGLRendererComposition
 
-+ (XLGLRendererFactory *)sharedVideoCompositorRender{
-    static XLGLRendererFactory* renderer = nil;
++ (XLGLRendererComposition *)sharedVideoCompositorRender{
+    static XLGLRendererComposition* renderer = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         renderer = [[[self class] alloc] init];
@@ -212,8 +213,11 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         
         
         
-        _currentContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-        [EAGLContext setCurrentContext:_currentContext];
+//        _currentContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+//        [EAGLContext setCurrentContext:_currentContext];
+        
+        context = [XLGLContext context];
+        [context useAsCurrentContext];
         
         [self setupOffscreenRenderContext];
         
@@ -278,9 +282,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
 {
     //    [[NSNotificationCenter defaultCenter] removeObserver:self];
     NSLog(@"%s",__func__);
-    if (_videoTextureCache) {
-        CFRelease(_videoTextureCache);
-    }
+
     if (_offscreenBufferHandle) {
         glDeleteFramebuffers(1, &_offscreenBufferHandle);
         _offscreenBufferHandle = 0;
@@ -643,8 +645,8 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
 {
     float tweenFactor = factorForTimeInRange(request.compositionTime, scene.fixedTimeRange);
     
-    [EAGLContext setCurrentContext:self.currentContext];
-    
+
+    [context useAsCurrentContext];
     
     glUseProgram(self.program);
     
@@ -894,8 +896,8 @@ bail1:
                  usingSouceBuffer:(CVPixelBufferRef) sourcePixelBuffer
 
 {
-    [EAGLContext setCurrentContext:self.currentContext];
-    
+
+    [context useAsCurrentContext];
     
     
     CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
@@ -1058,8 +1060,8 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
           andMaskImagePath:(NSURL *) path
             forTweenFactor:(float)tween
 {
-    [EAGLContext setCurrentContext:self.currentContext];
-    
+
+    [context useAsCurrentContext];
     
     glUseProgram(self.maskProgram);
     
@@ -1175,7 +1177,8 @@ bailMask:
 
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type
 {
-    [EAGLContext setCurrentContext:self.currentContext];
+
+    [context useAsCurrentContext];
     
     CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
     glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
@@ -1416,17 +1419,7 @@ bail2:
 
 - (void)setupOffscreenRenderContext
 {
-    //-- Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
-    if (_videoTextureCache) {
-        CFRelease(_videoTextureCache);
-        _videoTextureCache = NULL;
-    }
-    
-    CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _currentContext, NULL, &_videoTextureCache);
-    if (err != noErr) {
-        NSLog(@"Error at CVOpenGLESTextureCacheCreate %d", err);
-    }
-    
+
     glDisable(GL_DEPTH_TEST);
     
     
@@ -1708,18 +1701,15 @@ bail2:
     CVOpenGLESTextureRef lumaTexture = NULL;
     CVReturn err;
     
-    if (!_videoTextureCache) {
-        NSLog(@"No video texture cache");
-        goto bail;
-    }
     
-    // Periodic texture cache flush every frame
-    CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
+    
+    
+    
     
     // CVOpenGLTextureCacheCreateTextureFromImage will create GL texture optimally from CVPixelBufferRef.
     // Y
     err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                       _videoTextureCache,
+                                                       [context coreVideoTextureCache],
                                                        pixelBuffer,
                                                        NULL,
                                                        GL_TEXTURE_2D,
@@ -1744,18 +1734,11 @@ bail:
     CVOpenGLESTextureRef chromaTexture = NULL;
     CVReturn err;
     
-    if (!_videoTextureCache) {
-        NSLog(@"No video texture cache");
-        goto bail;
-    }
-    
-    // Periodic texture cache flush every frame
-    CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
     
     // CVOpenGLTextureCacheCreateTextureFromImage will create GL texture optimally from CVPixelBufferRef.
     // UV
     err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                       _videoTextureCache,
+                                                       [context coreVideoTextureCache],
                                                        pixelBuffer,
                                                        NULL,
                                                        GL_TEXTURE_2D,
@@ -1779,18 +1762,14 @@ bail:
     CVOpenGLESTextureRef bgraTexture = NULL;
     CVReturn err;
     
-    if (!_videoTextureCache) {
-        NSLog(@"No video texture cache");
-        goto bail;
-    }
+
     {
         int width = (int)CVPixelBufferGetWidth(pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
         
-        CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
         
         err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                           _videoTextureCache,
+                                                           [context coreVideoTextureCache],
                                                            pixelBuffer,
                                                            NULL,
                                                            GL_TEXTURE_2D,
@@ -1816,16 +1795,10 @@ bail:
 {
     CVOpenGLESTextureRef bgraTexture = NULL;
     CVReturn err;
-    //
-    //    if (!_videoTextureCache) {
-    //        NSLog(@"No video texture cache");
-    //        goto bail;
-    //    }
-    //
-    CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
+
     
     err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
-                                                       [self videoTextureCache],
+                                                       [context coreVideoTextureCache],
                                                        pixelBuffer,
                                                        NULL,
                                                        GL_TEXTURE_2D,

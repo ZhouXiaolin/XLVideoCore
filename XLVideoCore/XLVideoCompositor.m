@@ -7,7 +7,7 @@
 //
 
 #import "XLVideoCompositor.h"
-#import "XLGLRendererFactory.h"
+#import "XLGLRendererComposition.h"
 #import "XLVideoCompositorInstruction.h"
 #import "XLScene.h"
 #define RENDERINGQUEUE "com.mfasta.videocore.renderingqueue"
@@ -20,7 +20,7 @@
     dispatch_queue_t _renderContextQueue;
     AVVideoCompositionRenderContext *_renderContext;
     
-    XLGLRendererFactory* _renderer;
+    XLGLRendererComposition* _renderer;
     
     
     
@@ -32,7 +32,7 @@
         _renderingQueue = dispatch_queue_create(RENDERINGQUEUE, DISPATCH_QUEUE_SERIAL);
         _renderContextQueue = dispatch_queue_create(RENDERCONTEXTQUEUE, DISPATCH_QUEUE_SERIAL);
         _renderContextDidChange = NO;
-        _renderer = [[XLGLRendererFactory alloc] init];//多次初始化videocore会崩溃
+        _renderer = [[XLGLRendererComposition alloc] init];//多次初始化videocore会崩溃
         
         
         
