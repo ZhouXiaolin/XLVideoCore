@@ -16,6 +16,7 @@
 #include "ParticleSystem.h"
 #import "XLGLContext.h"
 #import "XLGLProgram.h"
+#import "XLGLFramebuffer.h"
 using namespace Simple2D;
 
 #define STRINGIZE(x) #x
@@ -170,8 +171,10 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     XLGLProgram* _program;
     XLGLProgram* _blendProgram;
     XLGLProgram* _maskProgram;
+    XLGLFramebuffer* _framebuffer;
+    
 }
-@property GLuint offscreenBufferHandle;
+//@property GLuint offscreenBufferHandle;
 @end
 
 @implementation XLGLRendererComposition
@@ -213,8 +216,8 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         context = [XLGLContext context];
         [context useAsCurrentContext];
         
-        [self setupOffscreenRenderContext];
         
+        _framebuffer = [[XLGLFramebuffer alloc] init];
         
         [self loadShaders];
         
@@ -275,11 +278,6 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
 - (void)dealloc
 {
     NSLog(@"%s",__func__);
-
-    if (_offscreenBufferHandle) {
-        glDeleteFramebuffers(1, &_offscreenBufferHandle);
-        _offscreenBufferHandle = 0;
-    }
     
 
     [EAGLContext setCurrentContext:nil];
@@ -634,19 +632,8 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     
     [_program use];
     
-    CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
-    glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
-    glViewport(0, 0, (int)CVPixelBufferGetWidth(destinationPixelBuffer), (int)CVPixelBufferGetHeight(destinationPixelBuffer));
     
-    
-    
-    // Attach the destination texture as a color attachment to the off screen frame buffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(destTexture), 0);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-        goto bail1;
-    }
+    [_framebuffer render:destinationPixelBuffer];
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -865,15 +852,6 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
         glFlush();
     }
     
-    
-bail1:
-    CFRelease(destTexture);
-    
-    // Periodic texture cache flush every frame
-    //    CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
-    //
-    [EAGLContext setCurrentContext:nil];
-    
 }
 #if 0
 - (void) particleRenderPixeBuffer:(CVPixelBufferRef) destinationPixelBuffer
@@ -1049,19 +1027,8 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
     
     [_maskProgram use];
     
-    CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
-    glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
-    glViewport(0, 0, (int)CVPixelBufferGetWidth(destinationPixelBuffer), (int)CVPixelBufferGetHeight(destinationPixelBuffer));
     
-    
-    
-    // Attach the destination texture as a color attachment to the off screen frame buffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(destTexture), 0);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-        goto bailMask;
-    }
+    [_framebuffer render:destinationPixelBuffer];
     
     
     {
@@ -1147,14 +1114,6 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
         
     }
     
-bailMask:
-    CFRelease(destTexture);
-    
-    // Periodic texture cache flush every frame
-    //    CVOpenGLESTextureCacheFlush(self.videoTextureCache, 0);
-    //
-    [EAGLContext setCurrentContext:nil];
-    
 }
 
 
@@ -1163,22 +1122,13 @@ bailMask:
 {
 
     [context useAsCurrentContext];
+
     
-    CVOpenGLESTextureRef destTexture = [self customTextureForPixelBuffer:destinationPixelBuffer];
-    glBindFramebuffer(GL_FRAMEBUFFER, self.offscreenBufferHandle);
-    glViewport(0, 0, (int)CVPixelBufferGetWidth(destinationPixelBuffer), (int)CVPixelBufferGetHeight(destinationPixelBuffer));
+    [_framebuffer render:destinationPixelBuffer];
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
     
     CVOpenGLESTextureRef backgroundTexture = [self customTextureForPixelBuffer:backgroundPixelBuffer];
     
-    
-    // Attach the destination texture as a color attachment to the off screen frame buffer
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(destTexture), 0);
-    
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-        goto bail2;
-    }
     
     
     {
@@ -1387,33 +1337,15 @@ bailMask:
     
     // 其他效果
     
-bail2:
     CFRelease(foregroundTexture);
     CFRelease(backgroundTexture);
-    CFRelease(destTexture);
-    // Periodic texture cache flush every frame
-    //    CVOpenGLESTextureCacheFlush(self.videoTextureCache, 0);
-    //
-    [EAGLContext setCurrentContext:nil];
+
     
     
     
     
 }
 
-- (void)setupOffscreenRenderContext
-{
-
-    glDisable(GL_DEPTH_TEST);
-    
-    
-    glGenFramebuffers(1, &_offscreenBufferHandle);
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, _offscreenBufferHandle);
-    
-    
-    
-}
 
 #pragma mark -  OpenGL ES 2 shader compilation
 
