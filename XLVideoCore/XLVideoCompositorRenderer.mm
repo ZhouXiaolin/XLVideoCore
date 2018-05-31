@@ -200,8 +200,8 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
         
         fire1PS = new ParticleSystem;
         
-        NSString* fire2PlistPath = [[NSBundle mainBundle] pathForResource:@"RDVECore.bundle/fallenLeaves" ofType:@"plist"];
-        NSString* fire2ImagePath = [[NSBundle mainBundle] pathForResource:@"RDVECore.bundle/fallenLeaves" ofType:@"png"];
+        NSString* fire2PlistPath = [[NSBundle mainBundle] pathForResource:@"XLVideoCore.bundle/fallenLeaves" ofType:@"plist"];
+        NSString* fire2ImagePath = [[NSBundle mainBundle] pathForResource:@"XLVideoCore.bundle/fallenLeaves" ofType:@"png"];
         fire1PS->initWithPlist([fire2PlistPath UTF8String]);
         fire1PS->setTexture([fire2ImagePath UTF8String]);
         

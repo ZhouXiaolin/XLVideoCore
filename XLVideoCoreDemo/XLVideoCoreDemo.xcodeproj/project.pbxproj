@@ -14,9 +14,11 @@
 		9F2E647C20BC2011009FD015 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F2E647A20BC2011009FD015 /* LaunchScreen.storyboard */; };
 		9F2E647F20BC2011009FD015 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E647E20BC2011009FD015 /* main.m */; };
 		9F2E648C20BC202B009FD015 /* libXLVideoCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F2E648A20BC201A009FD015 /* libXLVideoCore.a */; };
-		9F2E64D320BC6B8D009FD015 /* RDVECore.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F2E64D220BC6B8D009FD015 /* RDVECore.bundle */; };
+		9F2E64D320BC6B8D009FD015 /* XLVideoCore.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9F2E64D220BC6B8D009FD015 /* XLVideoCore.bundle */; };
 		9F2E64DF20BC6EBC009FD015 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F2E64DE20BC6EBC009FD015 /* libc++.tbd */; };
 		9F2E665320BD6DD8009FD015 /* 004.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 9F2E665120BD6DD8009FD015 /* 004.JPG */; };
+		9FE41D3B20BF8DBD00C4DAB2 /* test1.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = 9FE41D3A20BF8DBC00C4DAB2 /* test1.MP4 */; };
+		9FE41D3D20BF8E0500C4DAB2 /* test2.MP4 in Resources */ = {isa = PBXBuildFile; fileRef = 9FE41D3C20BF8E0500C4DAB2 /* test2.MP4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,11 +44,13 @@
 		9F2E647E20BC2011009FD015 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9F2E648520BC2019009FD015 /* XLVideoCore.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = XLVideoCore.xcodeproj; path = ../XLVideoCore.xcodeproj; sourceTree = "<group>"; };
 		9F2E648D20BC2142009FD015 /* XLVideoCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLVideoCore.h; path = ../../XLVideoCore/XLVideoCore.h; sourceTree = "<group>"; };
-		9F2E64D220BC6B8D009FD015 /* RDVECore.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RDVECore.bundle; sourceTree = "<group>"; };
+		9F2E64D220BC6B8D009FD015 /* XLVideoCore.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = XLVideoCore.bundle; sourceTree = "<group>"; };
 		9F2E64D420BC6BAF009FD015 /* XLVideoEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLVideoEditor.h; path = ../../XLVideoCore/XLVideoEditor.h; sourceTree = "<group>"; };
 		9F2E64D520BC6BD0009FD015 /* XLScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLScene.h; path = ../../XLVideoCore/XLScene.h; sourceTree = "<group>"; };
 		9F2E64DE20BC6EBC009FD015 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9F2E665120BD6DD8009FD015 /* 004.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 004.JPG; sourceTree = "<group>"; };
+		9FE41D3A20BF8DBC00C4DAB2 /* test1.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test1.MP4; sourceTree = "<group>"; };
+		9FE41D3C20BF8E0500C4DAB2 /* test2.MP4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test2.MP4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +87,7 @@
 		9F2E646E20BC2010009FD015 /* XLVideoCoreDemo */ = {
 			isa = PBXGroup;
 			children = (
-				9F2E64D220BC6B8D009FD015 /* RDVECore.bundle */,
+				9FE41D3920BF8BF000C4DAB2 /* Resource */,
 				9F2E648D20BC2142009FD015 /* XLVideoCore.h */,
 				9F2E64D420BC6BAF009FD015 /* XLVideoEditor.h */,
 				9F2E64D520BC6BD0009FD015 /* XLScene.h */,
@@ -91,7 +95,6 @@
 				9F2E647020BC2010009FD015 /* AppDelegate.m */,
 				9F2E647220BC2010009FD015 /* ViewController.h */,
 				9F2E647320BC2010009FD015 /* ViewController.m */,
-				9F2E665120BD6DD8009FD015 /* 004.JPG */,
 				9F2E647520BC2010009FD015 /* Main.storyboard */,
 				9F2E647820BC2011009FD015 /* Assets.xcassets */,
 				9F2E647A20BC2011009FD015 /* LaunchScreen.storyboard */,
@@ -115,6 +118,17 @@
 				9F2E64DE20BC6EBC009FD015 /* libc++.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9FE41D3920BF8BF000C4DAB2 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				9FE41D3C20BF8E0500C4DAB2 /* test2.MP4 */,
+				9FE41D3A20BF8DBC00C4DAB2 /* test1.MP4 */,
+				9F2E665120BD6DD8009FD015 /* 004.JPG */,
+				9F2E64D220BC6B8D009FD015 /* XLVideoCore.bundle */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,10 +205,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F2E647C20BC2011009FD015 /* LaunchScreen.storyboard in Resources */,
-				9F2E64D320BC6B8D009FD015 /* RDVECore.bundle in Resources */,
+				9F2E64D320BC6B8D009FD015 /* XLVideoCore.bundle in Resources */,
 				9F2E647920BC2011009FD015 /* Assets.xcassets in Resources */,
 				9F2E647720BC2010009FD015 /* Main.storyboard in Resources */,
 				9F2E665320BD6DD8009FD015 /* 004.JPG in Resources */,
+				9FE41D3B20BF8DBD00C4DAB2 /* test1.MP4 in Resources */,
+				9FE41D3D20BF8E0500C4DAB2 /* test2.MP4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

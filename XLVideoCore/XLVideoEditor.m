@@ -23,6 +23,11 @@
 @end
 
 @implementation XLVideoEditor
+
++ (XLVideoEditor *)videoEditor{
+    return [[self alloc] init];
+}
+
 - (CMTimeRange) passThroughTimeRangeAtIndex:(int) index
 {
     return self.scenes[index].passThroughTimeRange;
@@ -67,7 +72,7 @@
     passThroughTimeRange = (CMTimeRange*)alloca(sizeof(CMTimeRange) * [self.scenes count]);
     transitionTimeRange = (CMTimeRange*)alloca(sizeof(CMTimeRange) * [self.scenes count]);
     
-    NSString *bgVideoPath = [[NSBundle mainBundle] pathForResource:@"RDVECore.bundle/black" ofType:@"mp4"];
+    NSString *bgVideoPath = [[NSBundle mainBundle] pathForResource:@"XLVideoCore.bundle/black" ofType:@"mp4"];
     AVURLAsset *bgVideoAsset = [AVURLAsset assetWithURL:[NSURL fileURLWithPath:bgVideoPath]];
     
     CMTime nextClipStartTime = kCMTimeZero;

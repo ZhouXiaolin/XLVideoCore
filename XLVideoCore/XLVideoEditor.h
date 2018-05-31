@@ -20,7 +20,7 @@
 @property (nonatomic, strong) XLMusic* music;
 @property (nonatomic, strong) NSMutableArray<XLMusic *>* dubbingMusics;
 @property (nonatomic, assign) float totalTime;
-
++ (XLVideoEditor *) videoEditor;
 - (void) build;
 - (AVPlayerItem *) playerItem;
 - (AVAssetExportSession*)assetExportSessionWithPreset:(NSString*)presetName;

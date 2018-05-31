@@ -12,7 +12,7 @@
 @end
 @implementation XLScene
 + (XLScene *)scene{
-    return [self init];
+    return [[self alloc] init];
 }
 - (void) addObject:(XLAsset *) object
 {
@@ -34,7 +34,9 @@
 @end
 
 @implementation XLTransition
-
++ (XLTransition *)transition{
+    return [[self alloc] init];
+}
 - (instancetype)init{
     self = [super init];
     if (self) {
@@ -84,6 +86,10 @@
 @end
 
 @implementation XLAsset
+
++ (XLAsset *)asset{
+    return [[self alloc] init];
+}
 - (instancetype)init{
     self = [super init];
     if (self) {
@@ -95,7 +101,7 @@
         _startTimeInScene = kCMTimeZero;
         _fillType = XLImageFillTypeFitZoomOut;
         
-        _maskURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"RDVECore.bundle/black" ofType:@"png"]];
+        _maskURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"XLVideoCore.bundle/black" ofType:@"png"]];
         
     }
     return self;

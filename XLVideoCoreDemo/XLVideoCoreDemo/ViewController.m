@@ -19,38 +19,51 @@
     [super viewDidLoad];
     
     NSString* test1Path = [[NSBundle mainBundle] pathForResource:@"test1" ofType:@"MP4"];
-    NSString* test2Path = [[NSBundle mainBundle] pathForResource:@"test2" ofType:@"MOV"];
+    NSString* test2Path = [[NSBundle mainBundle] pathForResource:@"test2" ofType:@"MP4"];
     NSString* maskPath = [[NSBundle mainBundle] pathForResource:@"004" ofType:@"JPG"];
     
     NSMutableArray* scenes = [NSMutableArray array];
-    XLScene* scene = [[XLScene alloc] init];
     
-    XLAsset* asset = [[XLAsset alloc] init];
-    asset.type = XLAssetTypeVideo;
-    asset.url = [NSURL fileURLWithPath:test1Path];
-    asset.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(5, 600));
     
-    [scene.vvAsset addObject:asset];
+    XLScene* scene = [XLScene scene];
+    {
+        {
+            XLAsset* asset = [XLAsset asset];
+            asset.type = XLAssetTypeVideo;
+            asset.url = [NSURL fileURLWithPath:test1Path];
+            asset.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(5, 600));
+            
+            [scene addObject:asset];
+            
+        }
+        
+        {
+            XLTransition* transition = [XLTransition transition];
+            transition.type = XLVideoTransitionTypeMask;
+            transition.maskURL = [NSURL fileURLWithPath:maskPath];
+            scene.transition = transition;
+        }
+        
+        [scenes addObject:scene];
+    }
+
     
-    XLTransition* transition = [[XLTransition alloc] init];
-    transition.type = XLVideoTransitionTypeMask;
-    transition.maskURL = [NSURL fileURLWithPath:maskPath];
+    XLScene* scene2 = [XLScene scene];
+    {
+        {
+            XLAsset* asset2 = [XLAsset asset];
+            asset2.type = XLAssetTypeVideo;
+            asset2.url = [NSURL fileURLWithPath:test2Path];
+            asset2.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(5, 600));
+            
+            [scene2 addObject:asset2];
+        }
+        
+        [scenes addObject:scene2];
+    }
     
-    scene.transition = transition;
     
-    XLScene* scene2 = [[XLScene alloc] init];
-    
-    XLAsset* asset2 = [[XLAsset alloc] init];
-    asset2.type = XLAssetTypeVideo;
-    asset2.url = [NSURL fileURLWithPath:test2Path];
-    asset2.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(5, 600));
-    
-    [scene2.vvAsset addObject:asset2];
-    
-    [scenes addObject:scene];
-    [scenes addObject:scene2];
-    
-    XLVideoEditor* editor = [[XLVideoEditor alloc] init];
+    XLVideoEditor* editor = [XLVideoEditor videoEditor];
     editor.scenes = scenes;
     editor.fps = 30;
     editor.videoSize = CGSizeMake(720, 1080);

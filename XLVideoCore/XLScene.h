@@ -95,6 +95,9 @@ typedef NS_ENUM(NSInteger, XLAssetType) {
 
 @property (nonatomic,assign) CMTimeRange timeRange;
 
+
++ (XLTransition *) transition;
+
 @end
 
 
@@ -177,5 +180,6 @@ typedef NS_ENUM(NSInteger, XLImageFillType) {
 
 @property (nonatomic, strong) NSURL* _Nullable maskURL;
 
++ (XLAsset *) asset;
 @end
 
