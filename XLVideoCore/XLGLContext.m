@@ -6,9 +6,9 @@
 //  Copyright © 2018年 Solaren. All rights reserved.
 //
 
-#import "XLVideoCompositorContext.h"
+#import "XLGLContext.h"
 
-@implementation XLVideoCompositorContext
+@implementation XLGLContext
 @synthesize context = _context;
 @synthesize coreVideoTextureCache = _coreVideoTextureCache;
 

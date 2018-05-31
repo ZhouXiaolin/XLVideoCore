@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Solaren. All rights reserved.
 //
 
-#import "XLVideoCompositorRenderer.h"
+#import "XLGLRendererFactory.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <Photos/Photos.h>
@@ -131,7 +131,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
  );
 
 
-@interface XLVideoCompositorRenderer ()
+@interface XLGLRendererFactory ()
 {
     GLuint normalPositionAttribute,normalTextureCoordinateAttribute;
     GLuint normalInputTextureUniform,normalInputTextureUniform2;
@@ -176,10 +176,10 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
 @property GLuint offscreenBufferHandle;
 @end
 
-@implementation XLVideoCompositorRenderer
+@implementation XLGLRendererFactory
 
-+ (XLVideoCompositorRenderer *)sharedVideoCompositorRender{
-    static XLVideoCompositorRenderer* renderer = nil;
++ (XLGLRendererFactory *)sharedVideoCompositorRender{
+    static XLGLRendererFactory* renderer = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         renderer = [[[self class] alloc] init];

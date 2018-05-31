@@ -12,11 +12,11 @@
 #import <UIKit/UIKit.h>
 #import "XLScene.h"
 #import "XLVideoCompositorInstruction.h"
-@interface XLVideoCompositorRenderer : NSObject
+@interface XLGLRendererFactory : NSObject
 
 
 @property (nonatomic,assign) CGSize videoSize;
-+ (XLVideoCompositorRenderer *) sharedVideoCompositorRender;
++ (XLGLRendererFactory *) sharedVideoCompositorRender;
 - (void) clear;
 
 - (void) particleRenderPixeBuffer:(CVPixelBufferRef) destinationPixelBuffer
