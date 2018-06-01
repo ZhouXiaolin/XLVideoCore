@@ -7,7 +7,7 @@
 //
 
 #import "XLGLRendererTransitionMask.h"
-NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
+NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
 (
  precision mediump float;
  uniform sampler2D inputImageTexture;
@@ -60,7 +60,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorPassThroughMaskFragmentShader];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorPassThroughMaskFragmentShader];
     [_program link];
     
     maskPositionAttribute = [_program attributeIndex: @"position"];

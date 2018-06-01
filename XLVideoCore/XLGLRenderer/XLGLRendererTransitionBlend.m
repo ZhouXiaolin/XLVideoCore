@@ -8,7 +8,7 @@
 
 #import "XLGLRendererTransitionBlend.h"
 
-NSString*  const  kRDCompositorBlendFragmentShader = SHADER_STRING
+NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
 (
  precision mediump float;
  varying highp vec2 textureCoordinate;
@@ -62,7 +62,7 @@ NSString*  const  kRDCompositorBlendFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorBlendFragmentShader];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorBlendFragmentShader];
     [_program link];
     
     blendPositionAttribute = [_program attributeIndex: @"position"];

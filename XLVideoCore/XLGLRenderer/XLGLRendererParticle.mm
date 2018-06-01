@@ -10,7 +10,7 @@
 #include "ParticleSystem.h"
 using namespace Simple2D;
 
-NSString* const kRDParticleVertexShader = SHADER_STRING
+NSString* const kXLParticleVertexShader = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec2 inputTextureCoordinate;
@@ -26,7 +26,7 @@ NSString* const kRDParticleVertexShader = SHADER_STRING
  }
  );
 
-NSString* const kRDParticleFragmentShader = SHADER_STRING
+NSString* const kXLParticleFragmentShader = SHADER_STRING
 (
  precision mediump float;
  varying highp vec2 textureCoordinate;
@@ -83,7 +83,7 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDParticleVertexShader fragmentShaderString:kRDParticleFragmentShader];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLParticleVertexShader fragmentShaderString:kXLParticleFragmentShader];
     [_program link];
     
     particlePositionAttribute = [_program attributeIndex:@"position"];

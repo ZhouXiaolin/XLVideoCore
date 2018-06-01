@@ -7,7 +7,7 @@
 //
 
 #import "XLGLRendererBase.h"
-extern NSString*  const  kRDCompositorBlendFragmentShader;
+extern NSString*  const  kXLCompositorBlendFragmentShader;
 @interface XLGLRendererTransitionBlend : XLGLRendererBase
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type;
 @end

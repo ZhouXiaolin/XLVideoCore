@@ -41,7 +41,7 @@
     return self;
 }
 - (void) loadShaders {
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorFragmentShader];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
     [_program link];
     
     

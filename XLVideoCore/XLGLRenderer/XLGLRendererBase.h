@@ -20,8 +20,8 @@
 #define STRINGIZE2(x) STRINGIZE(x)
 #define SHADER_STRING(text) @ STRINGIZE2(text)
 
-extern NSString* const kRDCompositorVertexShader;
-extern NSString* const kRDCompositorFragmentShader;
+extern NSString* const kXLCompositorVertexShader;
+extern NSString* const kXLCompositorFragmentShader;
 
 @interface XLGLRendererBase : NSObject
 @property (nonatomic,assign) CGSize videoSize;

@@ -8,7 +8,7 @@
 
 #import "XLGLRendererBase.h"
 // 基类
-NSString*  const kRDCompositorVertexShader = SHADER_STRING
+NSString*  const kXLCompositorVertexShader = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec2 inputTextureCoordinate;
@@ -24,7 +24,7 @@ NSString*  const kRDCompositorVertexShader = SHADER_STRING
  }
  );
 
-NSString* const kRDCompositorFragmentShader = SHADER_STRING
+NSString* const kXLCompositorFragmentShader = SHADER_STRING
 (
  precision mediump float;
  varying highp vec2 textureCoordinate;

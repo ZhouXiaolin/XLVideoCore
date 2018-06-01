@@ -205,25 +205,25 @@
 		9F2E64B420BC6AE3009FD015 /* Particle */ = {
 			isa = PBXGroup;
 			children = (
+				9F2E64C120BC6AE3009FD015 /* Common.h */,
+				9F2E64BB20BC6AE3009FD015 /* Renderer.h */,
+				9F2E64C220BC6AE3009FD015 /* Particle.h */,
 				9F2E64B520BC6AE3009FD015 /* Particle.cpp */,
 				9F2E64B620BC6AE3009FD015 /* ParticleSystem.h */,
-				9F2E64B720BC6AE3009FD015 /* ParticleEffect.h */,
-				9F2E64B820BC6AE3009FD015 /* Math.cpp */,
-				9F2E64B920BC6AE3009FD015 /* Random.cpp */,
 				9F2E64BA20BC6AE3009FD015 /* ParticleSystem.cpp */,
-				9F2E64BB20BC6AE3009FD015 /* Renderer.h */,
-				9F2E64BC20BC6AE3009FD015 /* ParticleMemory.h */,
+				9F2E64B720BC6AE3009FD015 /* ParticleEffect.h */,
 				9F2E64BD20BC6AE3009FD015 /* ParticleEffect.cpp */,
+				9F2E64C320BC6AE3009FD015 /* Math.h */,
+				9F2E64B820BC6AE3009FD015 /* Math.cpp */,
+				9F2E64C620BC6AE3009FD015 /* Random.h */,
+				9F2E64B920BC6AE3009FD015 /* Random.cpp */,
+				9F2E64BC20BC6AE3009FD015 /* ParticleMemory.h */,
+				9F2E64C520BC6AE3009FD015 /* ParticleMemory.cpp */,
 				9F2E64BE20BC6AE3009FD015 /* TextureManager.hpp */,
 				9F2E64BF20BC6AE3009FD015 /* TextureManager.mm */,
 				9F2E64C020BC6AE3009FD015 /* ParticleEmitter.h */,
-				9F2E64C120BC6AE3009FD015 /* Common.h */,
-				9F2E64C220BC6AE3009FD015 /* Particle.h */,
-				9F2E64C320BC6AE3009FD015 /* Math.h */,
-				9F2E64C420BC6AE3009FD015 /* ParticleDescription.h */,
-				9F2E64C520BC6AE3009FD015 /* ParticleMemory.cpp */,
-				9F2E64C620BC6AE3009FD015 /* Random.h */,
 				9F2E64C720BC6AE3009FD015 /* ParticleEmitter.cpp */,
+				9F2E64C420BC6AE3009FD015 /* ParticleDescription.h */,
 			);
 			path = Particle;
 			sourceTree = "<group>";

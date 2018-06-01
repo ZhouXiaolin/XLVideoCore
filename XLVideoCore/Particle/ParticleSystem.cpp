@@ -42,7 +42,6 @@ namespace Simple2D
 
 	RenderUnit ParticleSystem::render()
 	{
-		int begin_index = 0;
 		float s = 0, c = 0, x = 0, y = 0;
 
 		auto particleIndex = pEmitter->getParticleList();
@@ -89,8 +88,6 @@ namespace Simple2D
         unit.flag = DEFAULT_INDEX | DEFAULT_TEXCOORD;
         
         return unit;
-//
-//        renderer->pushParticleRenderUnit(unit);
 	}
 
 	ParticleSystem::ParticleConfigMap ParticleSystem::parseParticlePlistFile(const char* filename)
