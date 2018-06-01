@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XLGLRendererBase.h"
 // 粒子渲染 
-@interface XLGLRendererParticle : NSObject
-
+@interface XLGLRendererParticle : XLGLRendererBase
+- (void) particleRenderPixeBuffer:(CVPixelBufferRef) destinationPixelBuffer
+                 usingSouceBuffer:(CVPixelBufferRef) sourcePixelBuffer;
 @end

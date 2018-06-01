@@ -7,7 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "XLGLRendererBase.h"
 // 转场渲染  mask方式
-@interface XLGLRendererTransitionMask : NSObject
-
+extern NSString*  const  kRDCompositorPassThroughMaskFragmentShader;
+@interface XLGLRendererTransitionMask : XLGLRendererBase
+- (void) renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer
+usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
+ andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer
+          andMaskImagePath:(NSURL *) path
+            forTweenFactor:(float)tween;
 @end
