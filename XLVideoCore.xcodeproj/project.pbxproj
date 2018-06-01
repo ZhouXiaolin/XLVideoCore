@@ -155,10 +155,10 @@
 				9F2E649520BC223D009FD015 /* XLScene.m */,
 				9F2E649720BC229B009FD015 /* XLVideoEditor.h */,
 				9F2E649820BC229B009FD015 /* XLVideoEditor.m */,
-				9F2E649A20BC22B7009FD015 /* XLVideoCompositor.h */,
-				9F2E649B20BC22B7009FD015 /* XLVideoCompositor.m */,
 				9F2E64EC20BCE017009FD015 /* XLVideoCompositorInstruction.h */,
 				9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */,
+				9F2E649A20BC22B7009FD015 /* XLVideoCompositor.h */,
+				9F2E649B20BC22B7009FD015 /* XLVideoCompositor.m */,
 				9FE41D4520BF972E00C4DAB2 /* XLGLContext.h */,
 				9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */,
 				9FE41D4820BF97C300C4DAB2 /* XLGLProgram.h */,
@@ -417,7 +417,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -469,7 +469,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -479,6 +479,12 @@
 		9F2E646120BC1FC1009FD015 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+					armv7,
+					arm64,
+				);
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL49D2HU6K;
 				OTHER_LDFLAGS = "-ObjC";
@@ -491,6 +497,12 @@
 		9F2E646220BC1FC1009FD015 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+					armv7,
+					arm64,
+				);
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YL49D2HU6K;
 				OTHER_LDFLAGS = "-ObjC";

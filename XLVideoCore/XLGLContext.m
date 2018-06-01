@@ -7,7 +7,8 @@
 //
 
 #import "XLGLContext.h"
-
+@interface XLGLContext()
+@end
 @implementation XLGLContext
 @synthesize context = _context;
 @synthesize coreVideoTextureCache = _coreVideoTextureCache;
@@ -47,6 +48,8 @@
 + (void)useContext{
     [[XLGLContext context] useAsCurrentContext];
 }
+
+
 - (void)useAsCurrentContext
 {
     EAGLContext *imageProcessingContext = [self context];

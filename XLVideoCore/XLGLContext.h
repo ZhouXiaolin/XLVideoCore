@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <OpenGLES/EAGL.h>
+#import "XLGLProgram.h"
 @interface XLGLContext : NSObject
 @property (readonly, retain, nonatomic) EAGLContext* context;
 @property (readonly) CVOpenGLESTextureCacheRef coreVideoTextureCache;

@@ -53,6 +53,7 @@
 }
 
 
+
 - (void)renderCustomPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer scene:(XLScene *)scene request:(AVAsynchronousVideoCompositionRequest *)request{
     
     if (!mainRenderer) {

@@ -21,8 +21,6 @@
     ksMatrix4 _modelViewMatrix;
     ksMatrix4 _projectionMatrix;
     
-    
-    XLGLContext* context;
     XLGLProgram* _program;
     
     XLGLFramebuffer* _framebuffer;
@@ -35,26 +33,33 @@
     if (!(self = [super init])) {
         return nil;
     }
-    context = [XLGLContext context];
-    [context useAsCurrentContext];
+
+    [XLGLContext useContext];
     
     
     _framebuffer = [[XLGLFramebuffer alloc] init];
     
     [self loadShaders];
     
-    [EAGLContext setCurrentContext:nil];
     
     return self;
 }
+
+Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
+{
+    
+    CMTime elapsed = CMTimeSubtract(time, range.start);
+    return CMTimeGetSeconds(elapsed) / CMTimeGetSeconds(range.duration);
+}
+
 
 - (void)renderCustomPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer scene:(XLScene *)scene request:(AVAsynchronousVideoCompositionRequest *)request
 {
     float tweenFactor = factorForTimeInRange(request.compositionTime, scene.fixedTimeRange);
     
     
-    [context useAsCurrentContext];
-    
+    [XLGLContext useContext];
+
     [_program use];
     
     
@@ -97,10 +102,6 @@
                     XLTexture* imageBuffer3 = [XLTexturePool.sharedInstance fetchImageTextureForPath:asset.maskURL];
                     glActiveTexture(GL_TEXTURE2);
                     glBindTexture(GL_TEXTURE_2D, imageBuffer3.texture);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                     
                     glUniform1i(normalInputTextureUniform2, 2);
                 }
@@ -136,7 +137,7 @@
                 
                 
                 glUniform1i(normalInputTextureUniform, 0);
-                glUniform4f(normalColorUniform, 1.0, 1.0, 1.0, tweenFactor);
+                glUniform4f(normalColorUniform, 1.0, 1.0, 1.0, 1.0);
                 
                 //外部传入四个点 决定一个矩形，按照此矩形crop
                 //依据这个矩形算出vertex 依据vertex映射texture
@@ -190,19 +191,11 @@
                     XLTexture* imageBuffer3 = [XLTexturePool.sharedInstance fetchImageTextureForPath:asset.maskURL];
                     glActiveTexture(GL_TEXTURE2);
                     glBindTexture(GL_TEXTURE_2D, imageBuffer3.texture);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                     
                     glUniform1i(normalInputTextureUniform2, 2);
                 }
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, imageBuffer.texture);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 
                 // 需要设置asset的size
                 GLfloat quadTextureData1[8] = {0};

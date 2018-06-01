@@ -23,12 +23,6 @@
 extern NSString* const kRDCompositorVertexShader;
 extern NSString* const kRDCompositorFragmentShader;
 
-Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
-{
-    
-    CMTime elapsed = CMTimeSubtract(time, range.start);
-    return CMTimeGetSeconds(elapsed) / CMTimeGetSeconds(range.duration);
-}
 @interface XLGLRendererBase : NSObject
 @property (nonatomic,assign) CGSize videoSize;
 - (CVOpenGLESTextureRef) customTextureForPixelBuffer:(CVPixelBufferRef)pixelBuffer;

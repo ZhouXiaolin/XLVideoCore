@@ -38,8 +38,7 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLContext* context;
-    XLGLProgram* _maskProgram;
+    XLGLProgram* _program;
     
     XLGLFramebuffer* _framebuffer;
 }
@@ -49,30 +48,29 @@ NSString*  const  kRDCompositorPassThroughMaskFragmentShader = SHADER_STRING
     if (!(self = [super init])) {
         return nil;
     }
-    context = [XLGLContext context];
-    [context useAsCurrentContext];
+    [XLGLContext useContext];
+
     
     
     _framebuffer = [[XLGLFramebuffer alloc] init];
     
     [self loadShaders];
     
-    [EAGLContext setCurrentContext:nil];
     
     return self;
 }
 - (void) loadShaders{
-    _maskProgram = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorPassThroughMaskFragmentShader];
-    [_maskProgram link];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorPassThroughMaskFragmentShader];
+    [_program link];
     
-    maskPositionAttribute = [_maskProgram attributeIndex: @"position"];
-    maskTextureCoordinateAttribute = [_maskProgram attributeIndex: @"inputTextureCoordinate"];
-    maskProjectionUniform = [_maskProgram uniformIndex: @"projection"];
-    maskInputTextureUniform = [_maskProgram uniformIndex: @"inputImageTexture"];
-    maskInputTextureUniform2 = [_maskProgram uniformIndex: @"inputImageTexture2"];
-    maskInputTextureUniform3 = [_maskProgram uniformIndex: @"inputImageTexture3"];
-    maskTransformUniform = [_maskProgram uniformIndex: @"renderTransform"];
-    maskFactorUniform = [_maskProgram uniformIndex: @"factor"];
+    maskPositionAttribute = [_program attributeIndex: @"position"];
+    maskTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
+    maskProjectionUniform = [_program uniformIndex: @"projection"];
+    maskInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
+    maskInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
+    maskInputTextureUniform3 = [_program uniformIndex: @"inputImageTexture3"];
+    maskTransformUniform = [_program uniformIndex: @"renderTransform"];
+    maskFactorUniform = [_program uniformIndex: @"factor"];
 }
 - (void) renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer
 usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
@@ -81,9 +79,9 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
             forTweenFactor:(float)tween
 {
     
-    [context useAsCurrentContext];
-    
-    [_maskProgram use];
+    [XLGLContext useContext];
+
+    [_program use];
     
     
     [_framebuffer render:destinationPixelBuffer];
@@ -114,15 +112,12 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
         GLuint imageTexture = imageBuffer.texture;
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, imageTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
         
         
         
         
-        [_maskProgram use];
+        [_program use];
         
         ksMatrixLoadIdentity(&_modelViewMatrix);
         

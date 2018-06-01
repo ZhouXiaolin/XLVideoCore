@@ -42,7 +42,6 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
     GLuint particlePositionAttribute,particleTextureCoordinateAttribute,particleTextureColorAttribute;
     GLuint particleInputTextureUniform;
     
-    XLGLContext* context;
     XLGLProgram* _program;
     
     XLGLFramebuffer* _framebuffer;
@@ -75,18 +74,12 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
     
     particleSystemManager.appendParticleSystem(fire1PS);
     
-    context = [XLGLContext context];
-    [context useAsCurrentContext];
-    
-    
-    
+    [XLGLContext useContext];
     
     _framebuffer = [[XLGLFramebuffer alloc] init];
     
     [self loadShaders];
-    
-    [EAGLContext setCurrentContext:nil];
-    
+        
     return self;
 }
 - (void) loadShaders{
@@ -147,8 +140,7 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
 
 {
     
-    [context useAsCurrentContext];
-    
+    [XLGLContext useContext];
     
     [_program use];
     [_framebuffer render:destinationPixelBuffer];
@@ -200,8 +192,6 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
         
         
         
-        //        glUniform4f(particleColorUniform, 1.0, 1.0, 1.0, 1.0);
-        
         glVertexAttribPointer(particlePositionAttribute, 2, GL_FLOAT, 0, 0, quadVertexData1);
         glEnableVertexAttribArray(particlePositionAttribute);
         
@@ -214,18 +204,10 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
         
-        
-        
-        
-        
-        
-        
         std::vector<RenderUnit> units;
         particleSystemManager.update(0.01);
         particleSystemManager.render(units);
-        
-        //        RenderUnit unit = units[0];
-        
+                
         for(auto unit : units){
             
             vertexData->positions.resize(unit.nPositionCount);
@@ -250,10 +232,7 @@ NSString* const kRDParticleFragmentShader = SHADER_STRING
             GLuint imageTexture = unit.texture->texture;
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, imageTexture);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
             
             
             glUniform1i(particleInputTextureUniform, 0);

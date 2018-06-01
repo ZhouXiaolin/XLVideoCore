@@ -18,7 +18,6 @@
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLContext* context;
     XLGLProgram* _program;
     
     XLGLFramebuffer* _framebuffer;
@@ -29,15 +28,15 @@
     if (!(self = [super init])) {
         return nil;
     }
-    context = [XLGLContext context];
-    [context useAsCurrentContext];
+    
+    [XLGLContext useContext];
+
     
     
     _framebuffer = [[XLGLFramebuffer alloc] init];
     
     [self loadShaders];
     
-    [EAGLContext setCurrentContext:nil];
     
     return self;
 }
@@ -58,8 +57,8 @@
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type
 {
     
-    [context useAsCurrentContext];
-    
+    [XLGLContext useContext];
+
     
     [_framebuffer render:destinationPixelBuffer];
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];

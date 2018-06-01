@@ -40,8 +40,7 @@ NSString*  const  kRDCompositorBlendFragmentShader = SHADER_STRING
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLContext* context;
-    XLGLProgram* _blendProgram;
+    XLGLProgram* _program;
 
     XLGLFramebuffer* _framebuffer;
 }
@@ -51,38 +50,37 @@ NSString*  const  kRDCompositorBlendFragmentShader = SHADER_STRING
     if (!(self = [super init])) {
         return nil;
     }
-    context = [XLGLContext context];
-    [context useAsCurrentContext];
+    
+    [XLGLContext useContext];
+
     
     
     _framebuffer = [[XLGLFramebuffer alloc] init];
     
     [self loadShaders];
-    
-    [EAGLContext setCurrentContext:nil];
-    
+        
     return self;
 }
 - (void) loadShaders{
-    _blendProgram = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorBlendFragmentShader];
-    [_blendProgram link];
+    _program = [[XLGLProgram alloc] initWithVertexShaderString:kRDCompositorVertexShader fragmentShaderString:kRDCompositorBlendFragmentShader];
+    [_program link];
     
-    blendPositionAttribute = [_blendProgram attributeIndex: @"position"];
-    blendTextureCoordinateAttribute = [_blendProgram attributeIndex: @"inputTextureCoordinate"];
-    blendProjectionUniform = [_blendProgram uniformIndex: @"projection"];
-    blendInputTextureUniform = [_blendProgram uniformIndex: @"inputImageTexture"];
-    blendInputTextureUniform2 = [_blendProgram uniformIndex: @"inputImageTexture2"];
-    blendTransformUniform = [_blendProgram uniformIndex: @"renderTransform"];
-    blendColorUniform = [_blendProgram uniformIndex: @"color"];
-    blendFactorUniform = [_blendProgram uniformIndex: @"factor"];
-    blendBrightnessUniform = [_blendProgram uniformIndex: @"brightness"];
+    blendPositionAttribute = [_program attributeIndex: @"position"];
+    blendTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
+    blendProjectionUniform = [_program uniformIndex: @"projection"];
+    blendInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
+    blendInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
+    blendTransformUniform = [_program uniformIndex: @"renderTransform"];
+    blendColorUniform = [_program uniformIndex: @"color"];
+    blendFactorUniform = [_program uniformIndex: @"factor"];
+    blendBrightnessUniform = [_program uniformIndex: @"brightness"];
 }
 
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type
 {
     
-    [context useAsCurrentContext];
-    
+    [XLGLContext useContext];
+
     
     [_framebuffer render:destinationPixelBuffer];
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
@@ -112,7 +110,7 @@ NSString*  const  kRDCompositorBlendFragmentShader = SHADER_STRING
         int transitionType = type;
         if (transitionType == 5 || transitionType == 6 || transitionType == 7 ) { // 淡入
             
-            [_blendProgram use];
+            [_program use];
             
             
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
