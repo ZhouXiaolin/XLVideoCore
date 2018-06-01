@@ -34,8 +34,8 @@ typedef NS_ENUM(NSInteger, XLAssetType) {
  *
  */
 @interface XLScene : NSObject
-@property (nonatomic,strong) NSMutableArray<XLAsset*>* _Nonnull  vvAsset;
-@property (nonatomic,strong) XLTransition* _Nullable transition;
+@property (nonatomic,readonly) NSMutableArray<XLAsset*>* _Nonnull  vvAsset;
+@property (nonatomic,readonly) XLTransition* _Nullable transition;
 + (XLScene*) scene;
 - (void) addObject:(XLAsset *) object;
 - (void) setTransition:(XLTransition*) transition;

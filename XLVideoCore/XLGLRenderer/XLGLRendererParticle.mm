@@ -8,6 +8,7 @@
 
 #import "XLGLRendererParticle.h"
 #include "ParticleSystem.h"
+#include "XLGLProgram.hpp"
 using namespace Simple2D;
 
 NSString* const kXLParticleVertexShader = SHADER_STRING
@@ -42,7 +43,7 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     GLuint particlePositionAttribute,particleTextureCoordinateAttribute,particleTextureColorAttribute;
     GLuint particleInputTextureUniform;
     
-    XLGLProgram* _program;
+    std::shared_ptr<XLGLProgram> _program;
     
     XLGLFramebuffer* _framebuffer;
     
@@ -83,13 +84,14 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLParticleVertexShader fragmentShaderString:kXLParticleFragmentShader];
-    [_program link];
+//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLParticleVertexShader fragmentShaderString:kXLParticleFragmentShader];
+//    [_program link];
+    _program = std::make_shared<XLGLProgram>(kXLParticleVertexShader.UTF8String, kXLParticleFragmentShader.UTF8String);
     
-    particlePositionAttribute = [_program attributeIndex:@"position"];
-    particleTextureColorAttribute = [_program attributeIndex:@"inputTextureColor"];
-    particleTextureCoordinateAttribute = [_program attributeIndex:@"inputTextureCoordinate"];
-    particleInputTextureUniform = [_program uniformIndex:@"inputImageTexture"];
+    particlePositionAttribute = _program->attribute("position");
+    particleTextureColorAttribute = _program->attribute("inputTextureColor");
+    particleTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
+    particleInputTextureUniform = _program->uniform("inputImageTexture");
 }
 
 - (bool) setDefaultTexcoords:(int) new_size{
@@ -142,7 +144,8 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     
     [XLGLContext useContext];
     
-    [_program use];
+//    [_program use];
+    _program->use();
     [_framebuffer render:destinationPixelBuffer];
     
     

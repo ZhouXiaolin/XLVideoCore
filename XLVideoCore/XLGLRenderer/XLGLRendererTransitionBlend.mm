@@ -7,7 +7,8 @@
 //
 
 #import "XLGLRendererTransitionBlend.h"
-
+#include "XLGLProgram.hpp"
+using namespace Simple2D;
 NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
 (
  precision mediump float;
@@ -40,7 +41,7 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLProgram* _program;
+    std::shared_ptr<XLGLProgram> _program;
 
     XLGLFramebuffer* _framebuffer;
 }
@@ -62,18 +63,20 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorBlendFragmentShader];
-    [_program link];
+//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorBlendFragmentShader];
+//    [_program link];
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String,kXLCompositorBlendFragmentShader.UTF8String);
+    _program->link();
     
-    blendPositionAttribute = [_program attributeIndex: @"position"];
-    blendTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
-    blendProjectionUniform = [_program uniformIndex: @"projection"];
-    blendInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
-    blendInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
-    blendTransformUniform = [_program uniformIndex: @"renderTransform"];
-    blendColorUniform = [_program uniformIndex: @"color"];
-    blendFactorUniform = [_program uniformIndex: @"factor"];
-    blendBrightnessUniform = [_program uniformIndex: @"brightness"];
+    blendPositionAttribute = _program->attribute("position");
+    blendTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
+    blendProjectionUniform = _program->uniform("projection");
+    blendInputTextureUniform = _program->uniform("inputImageTexture");
+    blendInputTextureUniform2 = _program->uniform("inputImageTexture2");
+    blendTransformUniform = _program->uniform("renderTransform");
+    blendColorUniform = _program->uniform("color");
+    blendFactorUniform = _program->uniform("factor");
+    blendBrightnessUniform = _program->uniform("brightness");
 }
 
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type
@@ -110,7 +113,8 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
         int transitionType = type;
         if (transitionType == 5 || transitionType == 6 || transitionType == 7 ) { // 淡入
             
-            [_program use];
+//            [_program use];
+            _program->use();
             
             
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

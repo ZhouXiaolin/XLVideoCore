@@ -25,8 +25,8 @@
 		9F2E64D020BC6AE3009FD015 /* ParticleMemory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E64C520BC6AE3009FD015 /* ParticleMemory.cpp */; };
 		9F2E64D120BC6AE3009FD015 /* ParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E64C720BC6AE3009FD015 /* ParticleEmitter.cpp */; };
 		9F2E64EE20BCE017009FD015 /* XLVideoCompositorInstruction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */; };
+		9F8CCAD520C1770200E685E1 /* XLGLProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */; };
 		9FE41D4720BF972E00C4DAB2 /* XLGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */; };
-		9FE41D4A20BF97C300C4DAB2 /* XLGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4920BF97C300C4DAB2 /* XLGLProgram.m */; };
 		9FE41D4D20BF9D8000C4DAB2 /* XLGLRendererMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4C20BF9D8000C4DAB2 /* XLGLRendererMain.mm */; };
 		9FE41D5020BF9DE100C4DAB2 /* XLGLRendererTransitionMask.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4F20BF9DE100C4DAB2 /* XLGLRendererTransitionMask.mm */; };
 		9FE41D5320BF9E0B00C4DAB2 /* XLGLRendererTransitionSimple.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D5220BF9E0B00C4DAB2 /* XLGLRendererTransitionSimple.mm */; };
@@ -35,7 +35,7 @@
 		9FE41D6220BFCE6E00C4DAB2 /* SDAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D5F20BFCE6E00C4DAB2 /* SDAVAssetExportSession.m */; };
 		9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.m */; };
 		9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.m */; };
-		9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.m */; };
+		9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -92,10 +92,10 @@
 		9F2E64DB20BC6E8D009FD015 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		9F2E64EC20BCE017009FD015 /* XLVideoCompositorInstruction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLVideoCompositorInstruction.h; sourceTree = "<group>"; };
 		9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLVideoCompositorInstruction.m; sourceTree = "<group>"; };
+		9F8CCAD320C1770100E685E1 /* XLGLProgram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = XLGLProgram.hpp; sourceTree = "<group>"; };
+		9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XLGLProgram.cpp; sourceTree = "<group>"; };
 		9FE41D4520BF972E00C4DAB2 /* XLGLContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLContext.h; sourceTree = "<group>"; };
 		9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLContext.m; sourceTree = "<group>"; };
-		9FE41D4820BF97C300C4DAB2 /* XLGLProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLProgram.h; sourceTree = "<group>"; };
-		9FE41D4920BF97C300C4DAB2 /* XLGLProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLProgram.m; sourceTree = "<group>"; };
 		9FE41D4B20BF9D8000C4DAB2 /* XLGLRendererMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererMain.h; sourceTree = "<group>"; };
 		9FE41D4C20BF9D8000C4DAB2 /* XLGLRendererMain.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XLGLRendererMain.mm; sourceTree = "<group>"; };
 		9FE41D4E20BF9DE100C4DAB2 /* XLGLRendererTransitionMask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererTransitionMask.h; sourceTree = "<group>"; };
@@ -113,7 +113,7 @@
 		9FE41D9F20C13CC300C4DAB2 /* XLGLRendererBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererBase.h; sourceTree = "<group>"; };
 		9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLRendererBase.m; sourceTree = "<group>"; };
 		9FE41DA220C1437D00C4DAB2 /* XLGLRendererTransitionBlend.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererTransitionBlend.h; sourceTree = "<group>"; };
-		9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLRendererTransitionBlend.m; sourceTree = "<group>"; };
+		9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XLGLRendererTransitionBlend.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,8 +161,8 @@
 				9F2E649B20BC22B7009FD015 /* XLVideoCompositor.m */,
 				9FE41D4520BF972E00C4DAB2 /* XLGLContext.h */,
 				9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */,
-				9FE41D4820BF97C300C4DAB2 /* XLGLProgram.h */,
-				9FE41D4920BF97C300C4DAB2 /* XLGLProgram.m */,
+				9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */,
+				9F8CCAD320C1770100E685E1 /* XLGLProgram.hpp */,
 				9FE41D7A20C015CF00C4DAB2 /* XLGLFramebuffer.h */,
 				9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.m */,
 				9FE41D5720BF9F9400C4DAB2 /* XLGLRenderer */,
@@ -250,7 +250,7 @@
 				9FE41D5120BF9E0B00C4DAB2 /* XLGLRendererTransitionSimple.h */,
 				9FE41D5220BF9E0B00C4DAB2 /* XLGLRendererTransitionSimple.mm */,
 				9FE41DA220C1437D00C4DAB2 /* XLGLRendererTransitionBlend.h */,
-				9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.m */,
+				9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm */,
 				9FE41D5420BF9E6100C4DAB2 /* XLGLRendererParticle.h */,
 				9FE41D5520BF9E6100C4DAB2 /* XLGLRendererParticle.mm */,
 			);
@@ -346,10 +346,10 @@
 				9F2E649320BC21AF009FD015 /* tinyxml2.cpp in Sources */,
 				9F2E649620BC223D009FD015 /* XLScene.m in Sources */,
 				9F2E64A220BC22DF009FD015 /* XLGLRendererComposition.mm in Sources */,
-				9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.m in Sources */,
+				9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm in Sources */,
 				9F2E64EE20BCE017009FD015 /* XLVideoCompositorInstruction.m in Sources */,
 				9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.m in Sources */,
-				9FE41D4A20BF97C300C4DAB2 /* XLGLProgram.m in Sources */,
+				9F8CCAD520C1770200E685E1 /* XLGLProgram.cpp in Sources */,
 				9FE41D6220BFCE6E00C4DAB2 /* SDAVAssetExportSession.m in Sources */,
 				9F2E64CC20BC6AE3009FD015 /* Random.cpp in Sources */,
 				9FE41D4720BF972E00C4DAB2 /* XLGLContext.m in Sources */,

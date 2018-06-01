@@ -11,7 +11,6 @@
 #include "ksVector.h"
 #include "ksMatrix.h"
 #import "XLGLContext.h"
-#import "XLGLProgram.h"
 #import "XLGLFramebuffer.h"
 #import "XLScene.h"
 #import "XLTexturePool.h"

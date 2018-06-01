@@ -10,6 +10,8 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import "XLVideoCompositorInstruction.h"
+#include "XLGLProgram.hpp"
+using namespace Simple2D;
 
 @interface XLGLRendererMain()
 {
@@ -21,7 +23,7 @@
     ksMatrix4 _modelViewMatrix;
     ksMatrix4 _projectionMatrix;
     
-    XLGLProgram* _program;
+    std::shared_ptr<XLGLProgram> _program;
     
     XLGLFramebuffer* _framebuffer;
 
@@ -60,7 +62,8 @@ Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
     
     [XLGLContext useContext];
 
-    [_program use];
+//    [_program use];
+    _program->use();
     
     
     [_framebuffer render:destinationPixelBuffer];
@@ -273,17 +276,18 @@ Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
 }
 
 - (void) loadShaders {
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
-    [_program link];
+//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
+//    [_program link];
     
-    
-    normalPositionAttribute = [_program attributeIndex: @"position"];
-    normalTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
-    normalProjectionUniform = [_program uniformIndex: @"projection"];
-    normalInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
-    normalInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
-    normalTransformUniform = [_program uniformIndex: @"renderTransform"];
-    normalColorUniform = [_program uniformIndex: @"color"];
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorFragmentShader.UTF8String);
+    _program->link();
+    normalPositionAttribute = _program->attribute("position");
+    normalTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
+    normalProjectionUniform = _program->uniform("projection");
+    normalInputTextureUniform = _program->uniform("inputImageTexture");
+    normalInputTextureUniform2 = _program->uniform("inputImageTexture2");
+    normalTransformUniform = _program->uniform("renderTransform");
+    normalColorUniform = _program->uniform("color");
 }
 
 

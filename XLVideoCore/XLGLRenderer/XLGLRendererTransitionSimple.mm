@@ -7,6 +7,9 @@
 //
 
 #import "XLGLRendererTransitionSimple.h"
+#include "XLGLProgram.hpp"
+using namespace Simple2D;
+
 @interface XLGLRendererTransitionSimple()
 {
     GLuint normalPositionAttribute,normalTextureCoordinateAttribute;
@@ -18,7 +21,7 @@
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLProgram* _program;
+    std::shared_ptr<XLGLProgram> _program;
     
     XLGLFramebuffer* _framebuffer;
 }
@@ -41,17 +44,27 @@
     return self;
 }
 - (void) loadShaders {
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
-    [_program link];
+//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
+//    [_program link];
+//
+//
+//    normalPositionAttribute = [_program attributeIndex: @"position"];
+//    normalTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
+//    normalProjectionUniform = [_program uniformIndex: @"projection"];
+//    normalInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
+//    normalInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
+//    normalTransformUniform = [_program uniformIndex: @"renderTransform"];
+//    normalColorUniform = [_program uniformIndex: @"color"];
     
-    
-    normalPositionAttribute = [_program attributeIndex: @"position"];
-    normalTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
-    normalProjectionUniform = [_program uniformIndex: @"projection"];
-    normalInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
-    normalInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
-    normalTransformUniform = [_program uniformIndex: @"renderTransform"];
-    normalColorUniform = [_program uniformIndex: @"color"];
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorFragmentShader.UTF8String);
+    _program->link();
+    normalPositionAttribute = _program->attribute("position");
+    normalTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
+    normalProjectionUniform = _program->uniform("projection");
+    normalInputTextureUniform = _program->uniform("inputImageTexture");
+    normalInputTextureUniform2 = _program->uniform("inputImageTexture2");
+    normalTransformUniform = _program->uniform("renderTransform");
+    normalColorUniform = _program->uniform("color");
 }
 
 - (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type
@@ -88,7 +101,8 @@
         int transitionType = type;
         if (transitionType <= 4) {
             //            glUseProgram(self.program);
-            [_program use];
+//            [_program use];
+            _program->use();
             // Set the render transform
             
             

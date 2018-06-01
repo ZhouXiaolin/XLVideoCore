@@ -7,6 +7,8 @@
 //
 
 #import "XLGLRendererTransitionMask.h"
+#include "XLGLProgram.hpp"
+using namespace Simple2D;
 NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
 (
  precision mediump float;
@@ -38,7 +40,7 @@ NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
     ksMatrix4 _projectionMatrix;
     
     
-    XLGLProgram* _program;
+    std::shared_ptr<XLGLProgram> _program;
     
     XLGLFramebuffer* _framebuffer;
 }
@@ -60,17 +62,20 @@ NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorPassThroughMaskFragmentShader];
-    [_program link];
+//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorPassThroughMaskFragmentShader];
+//    [_program link];
+
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorPassThroughMaskFragmentShader.UTF8String);
+    _program->link();
     
-    maskPositionAttribute = [_program attributeIndex: @"position"];
-    maskTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
-    maskProjectionUniform = [_program uniformIndex: @"projection"];
-    maskInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
-    maskInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
-    maskInputTextureUniform3 = [_program uniformIndex: @"inputImageTexture3"];
-    maskTransformUniform = [_program uniformIndex: @"renderTransform"];
-    maskFactorUniform = [_program uniformIndex: @"factor"];
+    maskPositionAttribute = _program->attribute("position");
+    maskTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
+    maskProjectionUniform = _program->uniform("projection");
+    maskInputTextureUniform = _program->uniform("inputImageTexture");
+    maskInputTextureUniform2 = _program->uniform("inputImageTexture2");
+    maskInputTextureUniform3 = _program->uniform("inputImageTexture3");
+    maskTransformUniform = _program->uniform("renderTransform");
+    maskFactorUniform = _program->uniform("factor");
 }
 - (void) renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer
 usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
@@ -81,7 +86,8 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
     
     [XLGLContext useContext];
 
-    [_program use];
+//    [_program use];
+    _program->use();
     
     
     [_framebuffer render:destinationPixelBuffer];
@@ -117,7 +123,8 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
         
         
         
-        [_program use];
+//        [_program use];
+        _program->use();
         
         ksMatrixLoadIdentity(&_modelViewMatrix);
         
