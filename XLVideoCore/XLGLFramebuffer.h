@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
 @interface XLGLFramebuffer : NSObject
+@property(readonly) CGSize size;
+@property(readonly) GLuint texture;
+- (instancetype)initWithSize:(CGSize)framebufferSize;
+- (void)activateFramebuffer;
+- (CVPixelBufferRef)pixelBuffer;
 - (void) render:(CVPixelBufferRef) destinationPixelBuffer;
 @end
