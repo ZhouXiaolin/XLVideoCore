@@ -20,8 +20,8 @@ namespace Simple2D {
         uint uniform(const char* name);
         bool compileShader(uint* shader, uint32_t type, const char* shaderString);
     private:
-        uint program;
-        uint vertShader, fragShader;
+        uint m_Program;
+        uint m_VertShader, m_FragShader;
     };
 }
 

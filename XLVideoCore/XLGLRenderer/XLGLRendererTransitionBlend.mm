@@ -9,7 +9,7 @@
 #import "XLGLRendererTransitionBlend.h"
 #include "XLGLProgram.hpp"
 using namespace Simple2D;
-NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
+const char* kXLCompositorBlendFragmentShader = SHADER_STRING
 (
  precision mediump float;
  varying highp vec2 textureCoordinate;
@@ -43,7 +43,7 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
     
     std::shared_ptr<XLGLProgram> _program;
 
-    XLGLFramebuffer* _framebuffer;
+    std::shared_ptr<XLGLFramebuffer> _framebuffer;
 }
 @end
 @implementation XLGLRendererTransitionBlend
@@ -56,16 +56,14 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
 
     
     
-    _framebuffer = [[XLGLFramebuffer alloc] init];
+    _framebuffer = std::make_shared<XLGLFramebuffer>();
     
     [self loadShaders];
         
     return self;
 }
 - (void) loadShaders{
-//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorBlendFragmentShader];
-//    [_program link];
-    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String,kXLCompositorBlendFragmentShader.UTF8String);
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader,kXLCompositorBlendFragmentShader);
     _program->link();
     
     blendPositionAttribute = _program->attribute("position");
@@ -84,8 +82,7 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
     
     [XLGLContext useContext];
 
-    
-    [_framebuffer render:destinationPixelBuffer];
+    _framebuffer->render(destinationPixelBuffer);
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
     
     CVOpenGLESTextureRef backgroundTexture = [self customTextureForPixelBuffer:backgroundPixelBuffer];
@@ -113,7 +110,6 @@ NSString*  const  kXLCompositorBlendFragmentShader = SHADER_STRING
         int transitionType = type;
         if (transitionType == 5 || transitionType == 6 || transitionType == 7 ) { // 淡入
             
-//            [_program use];
             _program->use();
             
             

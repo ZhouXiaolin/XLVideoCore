@@ -9,7 +9,7 @@
 #import "XLGLRendererTransitionMask.h"
 #include "XLGLProgram.hpp"
 using namespace Simple2D;
-NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
+const char* kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
 (
  precision mediump float;
  uniform sampler2D inputImageTexture;
@@ -42,7 +42,7 @@ NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
     
     std::shared_ptr<XLGLProgram> _program;
     
-    XLGLFramebuffer* _framebuffer;
+    std::shared_ptr<XLGLFramebuffer> _framebuffer;
 }
 @end
 @implementation XLGLRendererTransitionMask
@@ -54,7 +54,7 @@ NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
 
     
     
-    _framebuffer = [[XLGLFramebuffer alloc] init];
+    _framebuffer = std::make_shared<XLGLFramebuffer>();
     
     [self loadShaders];
     
@@ -62,10 +62,9 @@ NSString*  const  kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
     return self;
 }
 - (void) loadShaders{
-//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorPassThroughMaskFragmentShader];
-//    [_program link];
 
-    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorPassThroughMaskFragmentShader.UTF8String);
+
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader, kXLCompositorPassThroughMaskFragmentShader);
     _program->link();
     
     maskPositionAttribute = _program->attribute("position");
@@ -86,11 +85,10 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
     
     [XLGLContext useContext];
 
-//    [_program use];
     _program->use();
     
     
-    [_framebuffer render:destinationPixelBuffer];
+    _framebuffer->render(destinationPixelBuffer);
     
     
     {

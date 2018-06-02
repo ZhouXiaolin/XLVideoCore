@@ -33,8 +33,8 @@
 		9FE41D5620BF9E6100C4DAB2 /* XLGLRendererParticle.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D5520BF9E6100C4DAB2 /* XLGLRendererParticle.mm */; };
 		9FE41D6120BFCE6E00C4DAB2 /* fishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D5C20BFCE6E00C4DAB2 /* fishhook.c */; };
 		9FE41D6220BFCE6E00C4DAB2 /* SDAVAssetExportSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D5F20BFCE6E00C4DAB2 /* SDAVAssetExportSession.m */; };
-		9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.m */; };
-		9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.m */; };
+		9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.mm */; };
+		9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.mm */; };
 		9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm */; };
 /* End PBXBuildFile section */
 
@@ -108,10 +108,10 @@
 		9FE41D5D20BFCE6E00C4DAB2 /* fishhook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fishhook.h; sourceTree = "<group>"; };
 		9FE41D5F20BFCE6E00C4DAB2 /* SDAVAssetExportSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDAVAssetExportSession.m; sourceTree = "<group>"; };
 		9FE41D6020BFCE6E00C4DAB2 /* SDAVAssetExportSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDAVAssetExportSession.h; sourceTree = "<group>"; };
-		9FE41D7A20C015CF00C4DAB2 /* XLGLFramebuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLFramebuffer.h; sourceTree = "<group>"; };
-		9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLFramebuffer.m; sourceTree = "<group>"; };
+		9FE41D7A20C015CF00C4DAB2 /* XLGLFramebuffer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = XLGLFramebuffer.hpp; sourceTree = "<group>"; };
+		9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XLGLFramebuffer.mm; sourceTree = "<group>"; };
 		9FE41D9F20C13CC300C4DAB2 /* XLGLRendererBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererBase.h; sourceTree = "<group>"; };
-		9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLRendererBase.m; sourceTree = "<group>"; };
+		9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XLGLRendererBase.mm; sourceTree = "<group>"; };
 		9FE41DA220C1437D00C4DAB2 /* XLGLRendererTransitionBlend.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererTransitionBlend.h; sourceTree = "<group>"; };
 		9FE41DA320C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XLGLRendererTransitionBlend.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,8 +163,8 @@
 				9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */,
 				9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */,
 				9F8CCAD320C1770100E685E1 /* XLGLProgram.hpp */,
-				9FE41D7A20C015CF00C4DAB2 /* XLGLFramebuffer.h */,
-				9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.m */,
+				9FE41D7A20C015CF00C4DAB2 /* XLGLFramebuffer.hpp */,
+				9FE41D7B20C015CF00C4DAB2 /* XLGLFramebuffer.mm */,
 				9FE41D5720BF9F9400C4DAB2 /* XLGLRenderer */,
 				9F2E64A320BC22F7009FD015 /* XLTexturePool.h */,
 				9F2E64A420BC22F7009FD015 /* XLTexturePool.m */,
@@ -242,7 +242,7 @@
 				9F2E64A020BC22DF009FD015 /* XLGLRendererComposition.h */,
 				9F2E64A120BC22DF009FD015 /* XLGLRendererComposition.mm */,
 				9FE41D9F20C13CC300C4DAB2 /* XLGLRendererBase.h */,
-				9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.m */,
+				9FE41DA020C13CC300C4DAB2 /* XLGLRendererBase.mm */,
 				9FE41D4B20BF9D8000C4DAB2 /* XLGLRendererMain.h */,
 				9FE41D4C20BF9D8000C4DAB2 /* XLGLRendererMain.mm */,
 				9FE41D4E20BF9DE100C4DAB2 /* XLGLRendererTransitionMask.h */,
@@ -340,7 +340,7 @@
 				9F2E64A520BC22F7009FD015 /* XLTexturePool.m in Sources */,
 				9F2E64CB20BC6AE3009FD015 /* Math.cpp in Sources */,
 				9F2E64CF20BC6AE3009FD015 /* TextureManager.mm in Sources */,
-				9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.m in Sources */,
+				9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.mm in Sources */,
 				9F2E64CE20BC6AE3009FD015 /* ParticleEffect.cpp in Sources */,
 				9F2E649C20BC22B7009FD015 /* XLVideoCompositor.m in Sources */,
 				9F2E649320BC21AF009FD015 /* tinyxml2.cpp in Sources */,
@@ -348,7 +348,7 @@
 				9F2E64A220BC22DF009FD015 /* XLGLRendererComposition.mm in Sources */,
 				9FE41DA420C1437D00C4DAB2 /* XLGLRendererTransitionBlend.mm in Sources */,
 				9F2E64EE20BCE017009FD015 /* XLVideoCompositorInstruction.m in Sources */,
-				9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.m in Sources */,
+				9FE41D7C20C015CF00C4DAB2 /* XLGLFramebuffer.mm in Sources */,
 				9F8CCAD520C1770200E685E1 /* XLGLProgram.cpp in Sources */,
 				9FE41D6220BFCE6E00C4DAB2 /* SDAVAssetExportSession.m in Sources */,
 				9F2E64CC20BC6AE3009FD015 /* Random.cpp in Sources */,

@@ -23,7 +23,8 @@ using namespace Simple2D;
     
     std::shared_ptr<XLGLProgram> _program;
     
-    XLGLFramebuffer* _framebuffer;
+//    XLGLFramebuffer* _framebuffer;
+    std::shared_ptr<XLGLFramebuffer> _framebuffer;
 }
 @end
 @implementation XLGLRendererTransitionSimple
@@ -36,7 +37,8 @@ using namespace Simple2D;
 
     
     
-    _framebuffer = [[XLGLFramebuffer alloc] init];
+//    _framebuffer = [[XLGLFramebuffer alloc] init];
+    _framebuffer = std::make_shared<XLGLFramebuffer>();
     
     [self loadShaders];
     
@@ -44,19 +46,8 @@ using namespace Simple2D;
     return self;
 }
 - (void) loadShaders {
-//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
-//    [_program link];
-//
-//
-//    normalPositionAttribute = [_program attributeIndex: @"position"];
-//    normalTextureCoordinateAttribute = [_program attributeIndex: @"inputTextureCoordinate"];
-//    normalProjectionUniform = [_program uniformIndex: @"projection"];
-//    normalInputTextureUniform = [_program uniformIndex: @"inputImageTexture"];
-//    normalInputTextureUniform2 = [_program uniformIndex: @"inputImageTexture2"];
-//    normalTransformUniform = [_program uniformIndex: @"renderTransform"];
-//    normalColorUniform = [_program uniformIndex: @"color"];
     
-    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorFragmentShader.UTF8String);
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader, kXLCompositorFragmentShader);
     _program->link();
     normalPositionAttribute = _program->attribute("position");
     normalTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
@@ -73,7 +64,7 @@ using namespace Simple2D;
     [XLGLContext useContext];
 
     
-    [_framebuffer render:destinationPixelBuffer];
+    _framebuffer->render(destinationPixelBuffer);
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
     
     CVOpenGLESTextureRef backgroundTexture = [self customTextureForPixelBuffer:backgroundPixelBuffer];
@@ -100,12 +91,7 @@ using namespace Simple2D;
         
         int transitionType = type;
         if (transitionType <= 4) {
-            //            glUseProgram(self.program);
-//            [_program use];
-            _program->use();
-            // Set the render transform
-            
-            
+            _program->use();            
             
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);

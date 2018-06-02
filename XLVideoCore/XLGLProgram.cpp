@@ -11,52 +11,52 @@
 #import <OpenGLES/ES2/glext.h>
 namespace Simple2D {
     XLGLProgram::XLGLProgram(const char* vShaderString, const char* fShaderString){
-        program = glCreateProgram();
-        if (!compileShader(&vertShader, GL_VERTEX_SHADER, vShaderString)) {
+        m_Program = glCreateProgram();
+        if (!compileShader(&m_VertShader, GL_VERTEX_SHADER, vShaderString)) {
             
         }
-        if (!compileShader(&fragShader, GL_FRAGMENT_SHADER, fShaderString)) {
+        if (!compileShader(&m_FragShader, GL_FRAGMENT_SHADER, fShaderString)) {
             
         }
-        glAttachShader(program, vertShader);
-        glAttachShader(program, fragShader);
+        glAttachShader(m_Program, m_VertShader);
+        glAttachShader(m_Program, m_FragShader);
     }
     XLGLProgram::~XLGLProgram(){
-        if (vertShader) {
-            glDeleteShader(vertShader);
+        if (m_VertShader) {
+            glDeleteShader(m_VertShader);
         }
-        if (fragShader) {
-            glDeleteShader(fragShader);
+        if (m_FragShader) {
+            glDeleteShader(m_FragShader);
         }
-        if (program) {
-            glDeleteShader(program);
+        if (m_Program) {
+            glDeleteShader(m_Program);
         }
     }
     bool XLGLProgram::link(){
         GLint status;
-        glLinkProgram(program);
-        glGetProgramiv(program, GL_LINK_STATUS, &status);
+        glLinkProgram(m_Program);
+        glGetProgramiv(m_Program, GL_LINK_STATUS, &status);
         if (status == GL_FALSE) {
             return false;
         }
-        if (vertShader) {
-            glDeleteShader(vertShader);
-            vertShader = 0;
+        if (m_VertShader) {
+            glDeleteShader(m_VertShader);
+            m_VertShader = 0;
         }
-        if (fragShader) {
-            glDeleteShader(fragShader);
-            fragShader = 0;
+        if (m_FragShader) {
+            glDeleteShader(m_FragShader);
+            m_FragShader = 0;
         }
         return true;
     }
     void XLGLProgram::use(){
-        glUseProgram(program);
+        glUseProgram(m_Program);
     }
     uint XLGLProgram::attribute(const char* name){
-        return glGetAttribLocation(program, name);
+        return glGetAttribLocation(m_Program, name);
     }
     uint XLGLProgram::uniform(const char* name){
-        return glGetUniformLocation(program, name);
+        return glGetUniformLocation(m_Program, name);
     }
     bool XLGLProgram::compileShader(uint* shader, uint32_t type, const char* source){
         GLint status;

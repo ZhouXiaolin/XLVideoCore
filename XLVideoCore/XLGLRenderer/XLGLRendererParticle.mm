@@ -11,7 +11,7 @@
 #include "XLGLProgram.hpp"
 using namespace Simple2D;
 
-NSString* const kXLParticleVertexShader = SHADER_STRING
+const char* kXLParticleVertexShader = SHADER_STRING
 (
  attribute vec4 position;
  attribute vec2 inputTextureCoordinate;
@@ -27,7 +27,7 @@ NSString* const kXLParticleVertexShader = SHADER_STRING
  }
  );
 
-NSString* const kXLParticleFragmentShader = SHADER_STRING
+const char* kXLParticleFragmentShader = SHADER_STRING
 (
  precision mediump float;
  varying highp vec2 textureCoordinate;
@@ -45,7 +45,7 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     
     std::shared_ptr<XLGLProgram> _program;
     
-    XLGLFramebuffer* _framebuffer;
+    std::shared_ptr<XLGLFramebuffer> _framebuffer;
     
     ParticleSystemManager particleSystemManager;
     ParticleSystem* fire1PS;
@@ -77,16 +77,14 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     
     [XLGLContext useContext];
     
-    _framebuffer = [[XLGLFramebuffer alloc] init];
+    _framebuffer = std::make_shared<XLGLFramebuffer>();
     
     [self loadShaders];
         
     return self;
 }
 - (void) loadShaders{
-//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLParticleVertexShader fragmentShaderString:kXLParticleFragmentShader];
-//    [_program link];
-    _program = std::make_shared<XLGLProgram>(kXLParticleVertexShader.UTF8String, kXLParticleFragmentShader.UTF8String);
+    _program = std::make_shared<XLGLProgram>(kXLParticleVertexShader, kXLParticleFragmentShader);
     
     particlePositionAttribute = _program->attribute("position");
     particleTextureColorAttribute = _program->attribute("inputTextureColor");
@@ -144,9 +142,8 @@ NSString* const kXLParticleFragmentShader = SHADER_STRING
     
     [XLGLContext useContext];
     
-//    [_program use];
     _program->use();
-    [_framebuffer render:destinationPixelBuffer];
+    _framebuffer->render(destinationPixelBuffer);
     
     
     

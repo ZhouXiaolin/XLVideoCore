@@ -6,21 +6,22 @@
 //  Copyright © 2018年 Solaren. All rights reserved.
 //
 
+
 #import <Foundation/Foundation.h>
 
 #include "ksVector.h"
 #include "ksMatrix.h"
 #import "XLGLContext.h"
-#import "XLGLFramebuffer.h"
+#include "XLGLFramebuffer.hpp"
 #import "XLScene.h"
 #import "XLTexturePool.h"
 
 #define STRINGIZE(x) #x
 #define STRINGIZE2(x) STRINGIZE(x)
-#define SHADER_STRING(text) @ STRINGIZE2(text)
+#define SHADER_STRING(text) STRINGIZE2(text)
 
-extern NSString* const kXLCompositorVertexShader;
-extern NSString* const kXLCompositorFragmentShader;
+extern const char* kXLCompositorVertexShader;
+extern const char* kXLCompositorFragmentShader;
 
 @interface XLGLRendererBase : NSObject
 @property (nonatomic,assign) CGSize videoSize;

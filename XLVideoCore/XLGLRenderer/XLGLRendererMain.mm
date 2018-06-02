@@ -25,7 +25,7 @@ using namespace Simple2D;
     
     std::shared_ptr<XLGLProgram> _program;
     
-    XLGLFramebuffer* _framebuffer;
+    std::shared_ptr<XLGLFramebuffer> _framebuffer;
 
 }
 @end
@@ -39,7 +39,7 @@ using namespace Simple2D;
     [XLGLContext useContext];
     
     
-    _framebuffer = [[XLGLFramebuffer alloc] init];
+    _framebuffer = std::make_shared<XLGLFramebuffer>();
     
     [self loadShaders];
     
@@ -62,11 +62,10 @@ Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
     
     [XLGLContext useContext];
 
-//    [_program use];
     _program->use();
     
     
-    [_framebuffer render:destinationPixelBuffer];
+    _framebuffer->render(destinationPixelBuffer);
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -276,10 +275,8 @@ Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
 }
 
 - (void) loadShaders {
-//    _program = [[XLGLProgram alloc] initWithVertexShaderString:kXLCompositorVertexShader fragmentShaderString:kXLCompositorFragmentShader];
-//    [_program link];
-    
-    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader.UTF8String, kXLCompositorFragmentShader.UTF8String);
+
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader, kXLCompositorFragmentShader);
     _program->link();
     normalPositionAttribute = _program->attribute("position");
     normalTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
