@@ -8,7 +8,7 @@
 
 #import "XLGLRendererTransitionMask.h"
 #include "XLGLProgram.hpp"
-using namespace Simple2D;
+using namespace XLSimple2D;
 const char* kXLCompositorPassThroughMaskFragmentShader = SHADER_STRING
 (
  precision mediump float;
@@ -88,7 +88,7 @@ usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
     _program->use();
     
     
-    _framebuffer->render(destinationPixelBuffer);
+    _framebuffer->active(destinationPixelBuffer);
     
     
     {

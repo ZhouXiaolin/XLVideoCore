@@ -1,7 +1,7 @@
 #pragma once
 #include "Math.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	/* ·¢ÉäÆ÷ÀàĞÍ */
 	enum class EmitterType

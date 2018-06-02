@@ -10,7 +10,7 @@
 
 #import "XLGLContext.h"
 
-namespace Simple2D {
+namespace XLSimple2D {
     XLGLFramebuffer::XLGLFramebuffer(){
         glGenFramebuffers(1, &framebuffer);
         glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
@@ -23,7 +23,7 @@ namespace Simple2D {
 
     }
     
-    void XLGLFramebuffer::render(CVPixelBufferRef pixelBuffer){
+    void XLGLFramebuffer::active(CVPixelBufferRef pixelBuffer){
         CVOpenGLESTextureRef destTexture = NULL;
         CVReturn err;
         err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,

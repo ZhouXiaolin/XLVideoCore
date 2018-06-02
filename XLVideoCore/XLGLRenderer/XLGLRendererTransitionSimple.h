@@ -11,5 +11,9 @@
 // 转场渲染 简单类型
 
 @interface XLGLRendererTransitionSimple : XLGLRendererBase
-- (void)renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer forTweenFactor:(float)tween type:(unsigned int) type;
+- (void)  renderPixelBuffer:(CVPixelBufferRef)destinationPixelBuffer
+usingForegroundSourceBuffer:(CVPixelBufferRef)foregroundPixelBuffer
+  andBackgroundSourceBuffer:(CVPixelBufferRef)backgroundPixelBuffer
+             forTweenFactor:(float)tween
+                       type:(unsigned int) type;
 @end

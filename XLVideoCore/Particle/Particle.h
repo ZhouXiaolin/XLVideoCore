@@ -1,7 +1,7 @@
 #pragma once
 #include "ParticleDescription.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	struct Particle
 	{

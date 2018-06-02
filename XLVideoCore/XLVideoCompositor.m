@@ -6,10 +6,24 @@
 //  Copyright © 2018年 Solaren. All rights reserved.
 //
 
+
+
 #import "XLVideoCompositor.h"
-#import "XLGLRendererComposition.h"
 #import "XLVideoCompositorInstruction.h"
 #import "XLScene.h"
+
+
+#define USE_OPENGL
+//#define USE_METAL
+
+
+#ifdef USE_OPENGL
+#import "XLGLRendererComposition.h"
+#else
+#import "XLMTLRendererComposition.h"
+#endif
+
+
 #define RENDERINGQUEUE "com.mfasta.videocore.renderingqueue"
 #define RENDERCONTEXTQUEUE "com.mfasta.videocore.rendercontextqueue"
 #import <UIKit/UIKit.h>
@@ -19,9 +33,11 @@
     dispatch_queue_t _renderingQueue;
     dispatch_queue_t _renderContextQueue;
     AVVideoCompositionRenderContext *_renderContext;
-    
+#ifdef USE_OPENGL
     XLGLRendererComposition* _renderer;
-    
+#else
+    XLMTLRendererComposition* _renderer;
+#endif
     
     
 }
@@ -32,8 +48,12 @@
         _renderingQueue = dispatch_queue_create(RENDERINGQUEUE, DISPATCH_QUEUE_SERIAL);
         _renderContextQueue = dispatch_queue_create(RENDERCONTEXTQUEUE, DISPATCH_QUEUE_SERIAL);
         _renderContextDidChange = NO;
-        _renderer = [[XLGLRendererComposition alloc] init];//多次初始化videocore会崩溃
         
+#ifdef USE_OPENGL
+        _renderer = [[XLGLRendererComposition alloc] init];
+#else
+        _renderer = [[XLMTLRendererComposition alloc] init];
+#endif
         
         
         
@@ -54,14 +74,28 @@
 }
 - (NSDictionary *)sourcePixelBufferAttributes
 {
-    return @{ (NSString *)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA],
-              (NSString*)kCVPixelBufferOpenGLESCompatibilityKey : [NSNumber numberWithBool:YES]};
+    
+    
+    return @{
+             (NSString *)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA],
+#ifdef USE_OPENGL
+              (NSString*)kCVPixelBufferOpenGLESCompatibilityKey : [NSNumber numberWithBool:YES]
+#else
+             (NSString*)kCVPixelBufferMetalCompatibilityKey : [NSNumber numberWithBool:YES]
+#endif
+              
+              };
 }
 
 - (NSDictionary *)requiredPixelBufferAttributesForRenderContext
 {
     return @{ (NSString *)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA],
-              (NSString*)kCVPixelBufferOpenGLESCompatibilityKey : [NSNumber numberWithBool:YES]};
+#ifdef USE_OPENGL
+              (NSString*)kCVPixelBufferOpenGLESCompatibilityKey : [NSNumber numberWithBool:YES]
+#else
+              (NSString*)kCVPixelBufferMetalCompatibilityKey : [NSNumber numberWithBool:YES]
+#endif
+              };
 }
 
 - (void)startVideoCompositionRequest:(AVAsynchronousVideoCompositionRequest *)request
@@ -103,6 +137,8 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     CVPixelBufferRef dstPixels = [_renderContext newPixelBuffer];
     CGSize renderSize = _renderContext.size;
     
+    
+#ifdef USE_OPENGL
     _renderer.videoSize = renderSize;
     XLVideoCompositorInstruction* instruction = request.videoCompositionInstruction;
     
@@ -144,7 +180,9 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     
     
     return dstPixels;
+#else
     
+#endif
 }
 
 

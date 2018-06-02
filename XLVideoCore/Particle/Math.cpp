@@ -1,6 +1,6 @@
 #include "Math.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	const Vec3 Vec3::ZERO	= Vec3( 0,  0,  0);
 	const Vec3 Vec3::ONE	= Vec3( 1,  1,  1);

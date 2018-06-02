@@ -9,7 +9,7 @@
 #import "XLGLRendererParticle.h"
 #include "ParticleSystem.h"
 #include "XLGLProgram.hpp"
-using namespace Simple2D;
+using namespace XLSimple2D;
 
 const char* kXLParticleVertexShader = SHADER_STRING
 (
@@ -143,7 +143,7 @@ const char* kXLParticleFragmentShader = SHADER_STRING
     [XLGLContext useContext];
     
     _program->use();
-    _framebuffer->render(destinationPixelBuffer);
+    _framebuffer->active(destinationPixelBuffer);
     
     
     

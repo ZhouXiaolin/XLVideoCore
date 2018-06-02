@@ -1,6 +1,6 @@
 #include "ParticleMemory.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	std::vector<Particle*> ParticleMemory::vParticlePool;
 	std::vector<Particle*> ParticleMemory::vUnusedParticleList;

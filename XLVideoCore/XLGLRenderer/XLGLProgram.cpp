@@ -9,7 +9,7 @@
 #include "XLGLProgram.hpp"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
-namespace Simple2D {
+namespace XLSimple2D {
     XLGLProgram::XLGLProgram(const char* vShaderString, const char* fShaderString){
         m_Program = glCreateProgram();
         if (!compileShader(&m_VertShader, GL_VERTEX_SHADER, vShaderString)) {

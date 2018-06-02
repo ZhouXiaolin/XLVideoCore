@@ -11,7 +11,7 @@
 #import <OpenGLES/ES2/glext.h>
 #import "XLVideoCompositorInstruction.h"
 #include "XLGLProgram.hpp"
-using namespace Simple2D;
+using namespace XLSimple2D;
 
 @interface XLGLRendererMain()
 {
@@ -65,7 +65,7 @@ Float64 factorForTimeInRange(CMTime time, CMTimeRange range)
     _program->use();
     
     
-    _framebuffer->render(destinationPixelBuffer);
+    _framebuffer->active(destinationPixelBuffer);
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

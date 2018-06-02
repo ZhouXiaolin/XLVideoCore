@@ -4,7 +4,7 @@
 #include <random>
 #include <cstdlib>
 
-namespace Simple2D
+namespace XLSimple2D
 {
 
 	class RandomHelper

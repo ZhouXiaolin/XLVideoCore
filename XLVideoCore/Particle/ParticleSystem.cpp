@@ -6,7 +6,7 @@
 #define GET_F(map, name) atof((map)[name].c_str())
 #define GET_I(map, name) atoi((map)[name].c_str())
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	ParticleSystem::ParticleSystem()
 	{

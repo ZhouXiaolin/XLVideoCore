@@ -5,7 +5,7 @@
 
 #include <math.h>
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	static inline float toRadian(float angle)
 	{

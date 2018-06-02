@@ -5,7 +5,7 @@
 
 #include "Random.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	ParticleEffect::ParticleEffect()
 	{

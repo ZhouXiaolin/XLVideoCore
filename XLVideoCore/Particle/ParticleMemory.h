@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	class ParticleMemory
 	{

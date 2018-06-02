@@ -13,7 +13,7 @@
 
 #include <vector>
 #include <map>
-namespace Simple2D {
+namespace XLSimple2D {
     class Texture;
     enum Flag
     {

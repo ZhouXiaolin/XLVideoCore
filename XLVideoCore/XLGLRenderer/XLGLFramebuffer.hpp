@@ -13,12 +13,12 @@
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
 #include <CoreVideo/CVPixelBuffer.h>
-namespace Simple2D {
+namespace XLSimple2D {
     class XLGLFramebuffer {
     public:
         XLGLFramebuffer();
         ~XLGLFramebuffer();
-        void render(CVPixelBufferRef destinationPixelBuffer);
+        void active(CVPixelBufferRef destinationPixelBuffer);
     private:
         GLuint framebuffer;
     };

@@ -3,7 +3,7 @@
 
 #include <list>
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	class ParticleEffect;
 

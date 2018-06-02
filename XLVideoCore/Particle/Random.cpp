@@ -1,6 +1,6 @@
 #include "Random.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 
 	std::mt19937 &RandomHelper::getEngine()

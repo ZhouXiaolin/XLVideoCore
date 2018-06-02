@@ -5,7 +5,7 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	ParticleEmitter::ParticleEmitter()
 		: pParticleEffect(nullptr)

@@ -8,7 +8,7 @@
 
 #import "XLGLRendererTransitionSimple.h"
 #include "XLGLProgram.hpp"
-using namespace Simple2D;
+using namespace XLSimple2D;
 
 @interface XLGLRendererTransitionSimple()
 {
@@ -64,7 +64,7 @@ using namespace Simple2D;
     [XLGLContext useContext];
 
     
-    _framebuffer->render(destinationPixelBuffer);
+    _framebuffer->active(destinationPixelBuffer);
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
     
     CVOpenGLESTextureRef backgroundTexture = [self customTextureForPixelBuffer:backgroundPixelBuffer];

@@ -8,7 +8,7 @@
 
 #import "XLGLRendererTransitionBlend.h"
 #include "XLGLProgram.hpp"
-using namespace Simple2D;
+using namespace XLSimple2D;
 const char* kXLCompositorBlendFragmentShader = SHADER_STRING
 (
  precision mediump float;
@@ -82,7 +82,7 @@ const char* kXLCompositorBlendFragmentShader = SHADER_STRING
     
     [XLGLContext useContext];
 
-    _framebuffer->render(destinationPixelBuffer);
+    _framebuffer->active(destinationPixelBuffer);
     CVOpenGLESTextureRef foregroundTexture = [self customTextureForPixelBuffer:foregroundPixelBuffer];
     
     CVOpenGLESTextureRef backgroundTexture = [self customTextureForPixelBuffer:backgroundPixelBuffer];

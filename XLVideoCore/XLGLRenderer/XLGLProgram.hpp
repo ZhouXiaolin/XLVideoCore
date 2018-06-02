@@ -9,7 +9,7 @@
 #ifndef XLGLProgram_hpp
 #define XLGLProgram_hpp
 #include <iostream>
-namespace Simple2D {
+namespace XLSimple2D {
     class XLGLProgram {
     public:
         XLGLProgram(const char* vShaderString, const char* fShaderString);

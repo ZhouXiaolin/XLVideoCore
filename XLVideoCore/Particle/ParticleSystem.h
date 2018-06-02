@@ -11,7 +11,7 @@
 #include <map>
 #include <vector>
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	class DLL_export ParticleSystem
 	{

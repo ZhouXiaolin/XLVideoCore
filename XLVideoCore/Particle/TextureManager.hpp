@@ -14,7 +14,7 @@
 
 #include <map>
 
-namespace Simple2D
+namespace XLSimple2D
 {
     struct DLL_export Texture
     {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Particle.h"
 
-namespace Simple2D
+namespace XLSimple2D
 {
 	class ParticleEmitter;
 	class ParticleSystem;

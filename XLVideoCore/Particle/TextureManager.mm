@@ -8,7 +8,7 @@
 
 #include "TextureManager.hpp"
 #import <UIKit/UIKit.h>
-namespace Simple2D{
+namespace XLSimple2D{
     TextureManager::TextureManager(){
         
     }
