@@ -27,6 +27,7 @@
 		9F2E64EE20BCE017009FD015 /* XLVideoCompositorInstruction.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */; };
 		9F8CCAD520C1770200E685E1 /* XLGLProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */; };
 		9F8CCAD920C23D5A00E685E1 /* XLMTLRendererComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F8CCAD820C23D5A00E685E1 /* XLMTLRendererComposition.m */; };
+		9FE1FDDA20C92CB4000EDAA2 /* Gre.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9FE1FDD820C92CB4000EDAA2 /* Gre.cpp */; };
 		9FE41D4720BF972E00C4DAB2 /* XLGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */; };
 		9FE41D4D20BF9D8000C4DAB2 /* XLGLRendererMain.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4C20BF9D8000C4DAB2 /* XLGLRendererMain.mm */; };
 		9FE41D5020BF9DE100C4DAB2 /* XLGLRendererTransitionMask.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9FE41D4F20BF9DE100C4DAB2 /* XLGLRendererTransitionMask.mm */; };
@@ -97,6 +98,8 @@
 		9F8CCAD420C1770100E685E1 /* XLGLProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XLGLProgram.cpp; sourceTree = "<group>"; };
 		9F8CCAD720C23D5A00E685E1 /* XLMTLRendererComposition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLMTLRendererComposition.h; sourceTree = "<group>"; };
 		9F8CCAD820C23D5A00E685E1 /* XLMTLRendererComposition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLMTLRendererComposition.m; sourceTree = "<group>"; };
+		9FE1FDD820C92CB4000EDAA2 /* Gre.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Gre.cpp; sourceTree = "<group>"; };
+		9FE1FDD920C92CB4000EDAA2 /* Gre.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Gre.hpp; sourceTree = "<group>"; };
 		9FE41D4520BF972E00C4DAB2 /* XLGLContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLContext.h; sourceTree = "<group>"; };
 		9FE41D4620BF972E00C4DAB2 /* XLGLContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLGLContext.m; sourceTree = "<group>"; };
 		9FE41D4B20BF9D8000C4DAB2 /* XLGLRendererMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XLGLRendererMain.h; sourceTree = "<group>"; };
@@ -158,10 +161,8 @@
 				9F2E649520BC223D009FD015 /* XLScene.m */,
 				9F2E649720BC229B009FD015 /* XLVideoEditor.h */,
 				9F2E649820BC229B009FD015 /* XLVideoEditor.m */,
-				9F2E64EC20BCE017009FD015 /* XLVideoCompositorInstruction.h */,
-				9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */,
-				9F2E649A20BC22B7009FD015 /* XLVideoCompositor.h */,
-				9F2E649B20BC22B7009FD015 /* XLVideoCompositor.m */,
+				9FE1FDD420C92B45000EDAA2 /* XLVideoEditor */,
+				9FE1FDD220C92B11000EDAA2 /* XLGraphicsRenderEngine */,
 				9F8CCADA20C23D6800E685E1 /* XLMTLRenderer */,
 				9FE41D5720BF9F9400C4DAB2 /* XLGLRenderer */,
 			);
@@ -239,6 +240,26 @@
 				9F8CCAD820C23D5A00E685E1 /* XLMTLRendererComposition.m */,
 			);
 			path = XLMTLRenderer;
+			sourceTree = "<group>";
+		};
+		9FE1FDD220C92B11000EDAA2 /* XLGraphicsRenderEngine */ = {
+			isa = PBXGroup;
+			children = (
+				9FE1FDD820C92CB4000EDAA2 /* Gre.cpp */,
+				9FE1FDD920C92CB4000EDAA2 /* Gre.hpp */,
+			);
+			path = XLGraphicsRenderEngine;
+			sourceTree = "<group>";
+		};
+		9FE1FDD420C92B45000EDAA2 /* XLVideoEditor */ = {
+			isa = PBXGroup;
+			children = (
+				9F2E64EC20BCE017009FD015 /* XLVideoCompositorInstruction.h */,
+				9F2E64ED20BCE017009FD015 /* XLVideoCompositorInstruction.m */,
+				9F2E649A20BC22B7009FD015 /* XLVideoCompositor.h */,
+				9F2E649B20BC22B7009FD015 /* XLVideoCompositor.m */,
+			);
+			path = XLVideoEditor;
 			sourceTree = "<group>";
 		};
 		9FE41D5720BF9F9400C4DAB2 /* XLGLRenderer */ = {
@@ -357,6 +378,7 @@
 				9FE41DA120C13CC300C4DAB2 /* XLGLRendererBase.mm in Sources */,
 				9F2E64CE20BC6AE3009FD015 /* ParticleEffect.cpp in Sources */,
 				9F2E649C20BC22B7009FD015 /* XLVideoCompositor.m in Sources */,
+				9FE1FDDA20C92CB4000EDAA2 /* Gre.cpp in Sources */,
 				9F2E649320BC21AF009FD015 /* tinyxml2.cpp in Sources */,
 				9F2E649620BC223D009FD015 /* XLScene.m in Sources */,
 				9F2E64A220BC22DF009FD015 /* XLGLRendererComposition.mm in Sources */,

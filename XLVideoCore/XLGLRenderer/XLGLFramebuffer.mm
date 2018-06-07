@@ -39,13 +39,13 @@ namespace XLSimple2D {
                                                            0,
                                                            &destTexture);
         
-        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-        glViewport(0, 0, (int)CVPixelBufferGetWidth(pixelBuffer), (int)CVPixelBufferGetHeight(pixelBuffer));
+        ::glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+        ::glViewport(0, 0, (int)CVPixelBufferGetWidth(pixelBuffer), (int)CVPixelBufferGetHeight(pixelBuffer));
         
         
         
         // Attach the destination texture as a color attachment to the off screen frame buffer
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(destTexture), 0);
+        ::glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, CVOpenGLESTextureGetName(destTexture), 0);
         
         GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 //        NSAssert(status == GL_FRAMEBUFFER_COMPLETE, @"Incomplete filter FBO: %d", status);

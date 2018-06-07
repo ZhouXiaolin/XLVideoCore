@@ -139,6 +139,28 @@ static Float64 factorForTimeInRange(CMTime time, CMTimeRange range) /* 0.0 -> 1.
     
     
 #ifdef USE_OPENGL
+    
+    /*
+     
+
+     Gfx::BeginPass();
+     Gfx::ApplyDrawState();
+     Gfx::Draw();
+     Gfx::EndPass();
+     
+     
+     
+     Gfx::CommitFrame();
+     
+     
+     struct DrawState {
+        Id Pipeline; // 渲染管线
+     
+     };
+     
+     
+     */
+    
     _renderer.videoSize = renderSize;
     XLVideoCompositorInstruction* instruction = request.videoCompositionInstruction;
     

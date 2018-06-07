@@ -251,8 +251,6 @@ namespace XLSimple2D
 	void ParticleSystemManager::update(float dt)
 	{
         
-        
-        
 		for ( auto& ele : vParticleSystems ) {
 			ele->update(dt);
 		}
