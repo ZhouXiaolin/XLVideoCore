@@ -19,7 +19,7 @@
     [super viewDidLoad];
     
     NSString* test1Path = [[NSBundle mainBundle] pathForResource:@"test1" ofType:@"MP4"];
-    NSString* test2Path = [[NSBundle mainBundle] pathForResource:@"test2" ofType:@"MP4"];
+    NSString* test2Path = [[NSBundle mainBundle] pathForResource:@"test2" ofType:@"MOV"];
     NSString* maskPath = [[NSBundle mainBundle] pathForResource:@"004" ofType:@"JPG"];
     
     NSMutableArray* scenes = [NSMutableArray array];
@@ -39,8 +39,9 @@
         
         {
             XLTransition* transition = [XLTransition transition];
-            transition.type = XLVideoTransitionTypeMask;
-            transition.maskURL = [NSURL fileURLWithPath:maskPath];
+            transition.type = XLVideoTransitionTypeUp;
+//            transition.maskURL = [NSURL fileURLWithPath:maskPath];
+            transition.duration = 1.0;
             scene.transition = transition;
         }
         
@@ -66,7 +67,7 @@
     XLVideoEditor* editor = [XLVideoEditor videoEditor];
     editor.scenes = scenes;
     editor.fps = 30;
-    editor.videoSize = CGSizeMake(720, 1080);
+    editor.videoSize = CGSizeMake(720, 1280);
     
     [editor build];
     

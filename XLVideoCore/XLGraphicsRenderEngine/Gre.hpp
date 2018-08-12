@@ -16,11 +16,6 @@ namespace XLSimple2D {
     }
     
     
-    class Gre {
-    public:
-        static void Setup(const GreSetup& setup);
-        
-    };
     
     
     

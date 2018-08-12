@@ -10,10 +10,34 @@
 #include "XLGLProgram.hpp"
 using namespace XLSimple2D;
 
+const char* kXLCompositorMotionBlurFragmentShader = SHADER_STRING
+(
+ precision mediump float;
+ varying highp vec2 textureCoordinate;
+ uniform sampler2D inputImageTexture;
+ 
+ uniform vec4 color;
+ void main(){
+     vec2 dir = vec2(0.5) - textureCoordinate;
+     float dist = length(dir);
+     dir /= dist;
+     
+     
+     vec4 textureColor = texture2D(inputImageTexture, textureCoordinate)*color;
+     
+     vec4 sum = textureColor;
+     
+     gl_FragColor = textureColor;
+    
+     
+ }
+ );
+
+
 @interface XLGLRendererTransitionSimple()
 {
     GLuint normalPositionAttribute,normalTextureCoordinateAttribute;
-    GLuint normalInputTextureUniform,normalInputTextureUniform2;
+    GLuint normalInputTextureUniform;
     GLuint normalProjectionUniform,normalTransformUniform,normalColorUniform;
     
     
@@ -47,13 +71,12 @@ using namespace XLSimple2D;
 }
 - (void) loadShaders {
     
-    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader, kXLCompositorFragmentShader);
+    _program = std::make_shared<XLGLProgram>(kXLCompositorVertexShader, kXLCompositorMotionBlurFragmentShader);
     _program->link();
     normalPositionAttribute = _program->attribute("position");
     normalTextureCoordinateAttribute = _program->attribute("inputTextureCoordinate");
     normalProjectionUniform = _program->uniform("projection");
     normalInputTextureUniform = _program->uniform("inputImageTexture");
-    normalInputTextureUniform2 = _program->uniform("inputImageTexture2");
     normalTransformUniform = _program->uniform("renderTransform");
     normalColorUniform = _program->uniform("color");
 }
@@ -72,21 +95,6 @@ using namespace XLSimple2D;
     
     
     {
-        
-        // Y planes of foreground and background frame are used to render the Y plane of the destination frame
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(CVOpenGLESTextureGetTarget(foregroundTexture), CVOpenGLESTextureGetName(foregroundTexture));
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(CVOpenGLESTextureGetTarget(backgroundTexture), CVOpenGLESTextureGetName(backgroundTexture));
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         
         
         int transitionType = type;
@@ -132,6 +140,14 @@ using namespace XLSimple2D;
                 
                 
                 glUniformMatrix4fv(normalProjectionUniform, 1, GL_FALSE, (GLfloat*)&_projectionMatrix.m[0][0]);
+                
+                
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(CVOpenGLESTextureGetTarget(foregroundTexture), CVOpenGLESTextureGetName(foregroundTexture));
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
                 
                 glUniform1i(normalInputTextureUniform, 0);
                 glUniform4f(normalColorUniform, 1.0, 1.0, 1.0, 1.0);
@@ -184,6 +200,14 @@ using namespace XLSimple2D;
                 
                 glUniformMatrix4fv(normalProjectionUniform, 1, GL_FALSE, (GLfloat*)&_projectionMatrix.m[0][0]);
                 
+                
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(CVOpenGLESTextureGetTarget(backgroundTexture), CVOpenGLESTextureGetName(backgroundTexture));
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                
                 glUniform1i(normalInputTextureUniform, 1);
                 glUniform4f(normalColorUniform, 1.0, 1.0, 1.0, 1.0);
                 
@@ -204,9 +228,7 @@ using namespace XLSimple2D;
        
         
     }
-    
-    // 其他效果
-    
+        
     CFRelease(foregroundTexture);
     CFRelease(backgroundTexture);
     
